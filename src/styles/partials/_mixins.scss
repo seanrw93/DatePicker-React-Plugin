@@ -1,0 +1,5 @@
+@mixin expandDown($duration: 0.3s, $delay: 0s) {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height $duration ease-out $delay;
+}
