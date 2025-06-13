@@ -3,3 +3,20 @@
   max-height: 0;
   transition: max-height $duration ease-out $delay;
 }
+
+@mixin calendar-cell($size: 2.5rem) {
+  width: $size;
+  height: $size;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  cursor: pointer;
+  user-select: none;
+}
+
+@mixin responsive($breakpoint) {
+  @media (max-width: $breakpoint) {
+    @content;
+  }
+}

@@ -3,23 +3,27 @@
     top: 100%;
     left: 0;
     min-width: 400px;
-    padding: 10px;
+    padding: 15px 20px;
     background: white;
     border: 1px solid #ccc;
     border-radius: 4px;
     z-index: 10;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     overflow: hidden;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+
 
     &__content {
-
-    height: 300px;
+        @include responsive(35em) {
+            min-width: 100vw;
+        }
     }
 
     &__header {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        margin-top: 10px;
         margin-bottom: 10px;
     }
 
@@ -27,5 +31,47 @@
         display: grid;
         grid-template-columns: repeat(7, 1fr);
         gap: 5px;
+    }
+
+    &__dates {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 5px;
+        margin-top: 5px;
+    }
+
+    &__date-cell {
+        width: 2.5rem;
+        height: 2.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        cursor: pointer;
+        user-select: none;
+        background: #f8f9fa;
+        color: #333;
+        transition: background 0.2s, color 0.2s;
+
+        &:hover {
+            background: #e2e6ea;
+        }
+
+        @at-root .calendar__date-cell--selected {
+        background: #007bff;
+        color: #fff;
+
+            &:hover {
+                background: #007bff;
+            }
+        }
+
+        @at-root .calendar__date-cell--today {
+        background: #ffc800;
+
+            &:hover {
+                background: #ffc800;
+            }
+        }
     }
 }
