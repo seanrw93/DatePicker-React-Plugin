@@ -1,30 +1,87 @@
-button.close {
-    display: flex;
-    position: relative;
-    margin-left: auto;
-    background: transparent;
-    padding: 0;
-    border: none;
+.calendar__icon {
+    width: 2rem;
+    height: 2rem;
+    color: $primary-blue;
     cursor: pointer;
-    font-size: 1.5rem;
-    color: #333;
-    transition: background 0.2s, color 0.2s;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 0.8em;
+    margin-right: 1em;
+    transition: color 0.2s;
+    flex-shrink: 0;
 
-    &:hover,
-    &:focus {
-        color: #d32f2f;
-        outline: none;
+    &--close {
+        background: transparent;
+        border: none;
+        color: $dark-grey;
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: 0.25em 0.5em;
+        border-radius: 50%;
+        transition: background 0.2s, color 0.2s;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover,
+        &:focus {
+            background: $primary-grey;
+            color: $primary-red;
+            outline: none;
+        }
+    }
+    
+    &--prev {
+        background: transparent;
+        border: none;
+        color: $primary-blue;
+        padding: 0.25em 0.5em;
+        width: 1.5em;
+        height: 1.5em;
+        padding: 0;
+        margin: 0;
+        cursor: pointer;
+        border-radius: 50%;
+        transition: color 0.2s;
+
+        &:hover {
+            background: $primary-grey;
+            color: darken($primary-blue, 10%);
+            outline: none;
+        }
     }
 
-    &::after {
-        position: absolute;
-        top: -30%;
-        right: -55%;
-        content: '×';
-        line-height: 1;
-        pointer-events: none;
-        font-size: 2em; // Match the button's font-size
+    &--next {
+        background: transparent;
+        border: none;
+        color: $primary-blue;
+        padding: 0.25em 0.5em;
+        width: 1.5em;
+        height: 1.5em;
+        padding: 0;
+        margin: 0;
+        cursor: pointer;
+        border-radius: 50%;
+        transition: color 0.2s;
+
+        &:hover{
+            color: darken($primary-blue, 10%);
+            outline: none;
+        }
+    }
+
+    &--home {
+        background: none;
+        color: $primary-blue;
+        width: 2em;
+        height: 2em;
+        padding: 0;
+        margin: 0;
+        cursor: pointer;
+        border-radius: 50%;
+        transition: color 0.2s;
+
+        &:hover {
+            color: darken($primary-blue, 10%);
+            outline: none;
+        }
     }
 }

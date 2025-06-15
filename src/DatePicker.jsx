@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react"
 import { CSSTransition } from "react-transition-group";
+import { HomeIcon, ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 
 const DatePicker = ({
         inputId = "", 
@@ -15,7 +16,7 @@ const DatePicker = ({
     const [showCalendar, setShowCalendar] = useState(false);
     const [inputValue, setInputValue] = useState("");
     const [dateValue, setDateValue] = useState({
-        day: "",
+       
         date: "",
         month: "",
         year: ""
@@ -32,15 +33,16 @@ const DatePicker = ({
         const { name, value } = e.target;
         setDateValue(prev => ({
             ...prev,
-            [name]: name === "month" || name === "year" ? Number(value) : value
+            [name]: Number(value)
         }));
     };
     
     useEffect(() => {
         const { date, month, year } = dateValue;
         if (date && month !== "" && year) {
-            setInputValue(`${date.toString().padStart(2, "0")}/${(month + 1).toString().padStart(2, "0")}/${year}`);
-        } 
+            const jsDate = new Date(year, month, date);
+            setInputValue(jsDate.toLocaleDateString("en-GB")); // "dd/mm/yyyy" format
+        }
     }, [dateValue]);
 
     const handleInputChange = (e) => {
@@ -58,9 +60,7 @@ const DatePicker = ({
         if (parts.length === 3) {
             const [date, month, year] = parts;
             if (date.length === 2 && month.length === 2 && year.length === 4) {
-                const day = parseInt(new Date(year, month - 1, date).getDay(), 10);
                 setDateValue({
-                    day: day,
                     date: Number(date),
                     month: Number(month) - 1, // zero-based
                     year: Number(year)
@@ -77,7 +77,7 @@ const DatePicker = ({
         const year = today.getFullYear();
 
         setDateValue({
-            day: day,
+       
             date: date,
             month: month,
             year: year
@@ -96,6 +96,9 @@ const DatePicker = ({
         setDateValue(prev => {
             const newMonth = prev.month == 0 ? 11 : prev.month - 1;
             const newYear = prev.month == 0 ? prev.year - 1 : prev.year;
+
+            if (isDisabled) return;
+
             return {
                 ...prev,
                 month: newMonth,
@@ -109,6 +112,9 @@ const DatePicker = ({
         setDateValue(prev => {
             const newMonth = prev.month == 11 ? 0 : prev.month + 1;
             const newYear = prev.month == 11 ? prev.year + 1 : prev.year;
+
+            if (isDisabled) return;
+
             return {
                 ...prev,
                 month: newMonth,
@@ -129,7 +135,9 @@ const DatePicker = ({
 
         const calendarDates = [];
         let dayCounter = 1;
-        const totalDays = 42;
+
+        const totalCells = daysInMonth + firstDayOfWeek;
+        const totalDays = totalCells <= 35 ? 35 : 42;
 
         for (let i = 0; i < totalDays; i++) {
             if (i < firstDayOfWeek) {
@@ -146,6 +154,17 @@ const DatePicker = ({
     }
 
     const calendarGrid = generateCalendarDates();
+
+    const isDisabledDate = (cellDay) => {
+        if (!cellDay) return true; // Disable empty cells
+
+        const cellDate = new Date(dateValue.year, dateValue.month, cellDay);
+
+        if (minDate && cellDate < new Date(minDate)) return true;
+        if (maxDate && cellDate > new Date(maxDate)) return true;
+
+        return false;
+    };
 
     const handleDateClick = (e) => {
         const selectedDate = e.target?.textContent;
@@ -228,9 +247,15 @@ const DatePicker = ({
                     ref={calendarRef} 
                 >
                     <div className="calendar__content">
-                        <button className="close" onClick={() => setShowCalendar(false)}>Close</button>
                         <div className="calendar__header">
-                            <button className="calendar__prev" onClick={handlePrev}>Prev</button>
+                            <HomeIcon className="calendar__icon calendar__icon--home" onClick={handleCurrentDate} />
+                            <span className="calendar__title">Select Date</span>
+                            <button className="calendar__close calendar__icon--close" onClick={() => setShowCalendar(false)}>×</button>
+                        </div>
+                        <div className="calendar__nav">
+                            <button className="calendar__icon calendar__icon--prev" onClick={handlePrev} aria-label="Previous Month">
+                                <ChevronLeftIcon />
+                            </button>
                             <div className="calendar__date">
                                 <select name="month" id="month" 
                                     onChange={handleDateChange}
@@ -253,7 +278,9 @@ const DatePicker = ({
                                     ))}
                                 </select>
                             </div>
-                            <button className="calendar__next" onClick={handleNext}>Next</button>
+                            <button className="calendar__icon calendar__icon--next" onClick={handleNext} aria-label="Next Month">
+                                <ChevronRightIcon />
+                            </button>
                         </div>
                         <div className="calendar__days">
                             {daysOfWeekOptions.map((day, index) => (
@@ -266,7 +293,10 @@ const DatePicker = ({
                             {calendarGrid.map((date, index) => (
                                 <div 
                                     key={index} 
-                                    className={`calendar__date-cell ${handleCalendarCellClasses(date)}`}
+                                    className={`calendar__date-cell ${handleCalendarCellClasses(date)} ${isDisabledDate(date) ? "calendar__date-cell--disabled" : ""}`}
+                                    aria-label={date ? `Select date ${date}` : "Empty cell"}
+                                    tabIndex={date ? 0 : -1}
+                                    role="button"
                                     onClick={(e) => {
                                         handleDateClick(e);
                                         setShowCalendar(false);
