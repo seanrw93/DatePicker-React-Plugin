@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react"
 import { CSSTransition } from "react-transition-group";
 import { HomeIcon, ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
+import { i18n } from "./utils/i18nDateData";
 
 const DatePicker = ({
         inputId = "", 
@@ -10,24 +11,35 @@ const DatePicker = ({
         isValid = null,
         isDisabled = false,
         maxDate = undefined,
-        minDate = undefined
+        minDate = undefined,
+        minYear = new Date().getFullYear() - 100,
+        maxYear = new Date().getFullYear(),
+        locale = "en"
     }) => {
+
+    // States and Refs START
 
     const [showCalendar, setShowCalendar] = useState(false);
     const [inputValue, setInputValue] = useState("");
-    const [dateValue, setDateValue] = useState({
-       
+    const [dateValue, setDateValue] = useState({ 
         date: "",
         month: "",
         year: ""
     })
+    const [buttonDisabled, setButtonDisabled] = useState({
+        prev: false,
+        next: false
+    });
 
     const calendarRef = useRef(null);
+
+    // States and Refs END
+
+    // Handlers START
 
     const handleInputFocus = () => {
         setShowCalendar(true);
     }
-
 
     const handleDateChange = (e) => {
         const { name, value } = e.target;
@@ -36,14 +48,6 @@ const DatePicker = ({
             [name]: Number(value)
         }));
     };
-    
-    useEffect(() => {
-        const { date, month, year } = dateValue;
-        if (date && month !== "" && year) {
-            const jsDate = new Date(year, month, date);
-            setInputValue(jsDate.toLocaleDateString("en-GB")); // "dd/mm/yyyy" format
-        }
-    }, [dateValue]);
 
     const handleInputChange = (e) => {
         let value = e.target.value.replace(/\D/g, ""); // Remove non-digits
@@ -54,19 +58,28 @@ const DatePicker = ({
             value = value.slice(0, 2) + "/" + value.slice(2, 4) + "/" + value.slice(4, 8);
         }
 
-        setInputValue(value);
-
+        // Split and check year bounds
         const parts = value.split("/");
         if (parts.length === 3) {
-            const [date, month, year] = parts;
+            let [date, month, year] = parts;
             if (date.length === 2 && month.length === 2 && year.length === 4) {
+                let numericYear = Number(year);
+                if (numericYear > maxYear) {
+                    year = String(maxYear);
+                } else if (numericYear < minYear) {
+                    year = String(minYear);
+                }
+                // Reconstruct value if year was changed
+                value = `${date}/${month}/${year}`;
                 setDateValue({
                     date: Number(date),
-                    month: Number(month) - 1, // zero-based
+                    month: Number(month) - 1,
                     year: Number(year)
                 });
             }
         }
+
+        setInputValue(value);
     };
 
     const handleCurrentDate = () => {
@@ -76,52 +89,108 @@ const DatePicker = ({
         const month = today.getMonth();
         const year = today.getFullYear();
 
-        setDateValue({
-       
+        setDateValue({ 
             date: date,
             month: month,
             year: year
         });
     }
 
+    const handlePrev = (e) => {
+        e.preventDefault();
+        setDateValue(prev => {
+            // Only block if at min year and January
+            if (isDisabled || (prev.month === 0 && prev.year === minYear)) return prev;
+            const newMonth = prev.month === 0 ? 11 : prev.month - 1;
+            const newYear = prev.month === 0 ? prev.year - 1 : prev.year;
+            return {
+                ...prev,
+                month: newMonth,
+                year: newYear
+            };
+        });
+    };
+
+    const handleNext = (e) => {
+        e.preventDefault();
+        setDateValue(prev => {
+            // Only block if at max year and December
+            if (isDisabled || (prev.month === 11 && prev.year === maxYear)) return prev;
+            const newMonth = prev.month === 11 ? 0 : prev.month + 1;
+            const newYear = prev.month === 11 ? prev.year + 1 : prev.year;
+            return {
+                ...prev,
+                month: newMonth,
+                year: newYear
+            };
+        });
+    };
+
+    const handleDateClick = (e) => {
+        const selectedDate = e.target?.textContent;
+
+        if (selectedDate) {
+            setDateValue(prev => ({
+                ...prev,
+                date: Number(selectedDate)
+            }))
+        }
+    }
+
+    const handleCalendarCellClasses = (cellDate) => {
+        const today = new Date()
+        const {date, month, year} = dateValue;
+
+        const isToday = 
+            Number(cellDate) === today.getDate() &&
+            month === today.getMonth() &&
+            year === today.getFullYear();
+
+        const isSelected = 
+            Number(cellDate) === date &&
+            month !== "" &&
+            year !== "";
+
+        if (isToday) {
+            return " calendar__date-cell--today"
+        } else if (isSelected) {
+            return " calendar__date-cell--selected"
+        } else {
+            return "";
+        }
+    }
+
+    // Handlers END
+
+    // Effects START
+
+    // Update input value when dateValue changes
+    useEffect(() => {
+        const { date, month, year } = dateValue;
+        if (date && month !== "" && year) {
+            const jsDate = new Date(year, month, date);
+            setInputValue(jsDate.toLocaleDateString("en-GB")); // "dd/mm/yyyy" format
+        }
+    }, [dateValue]);
+
+    // Initialize dateValue with current date if showCalendar is true and no date is set
     useEffect(() => {
         if (showCalendar && !dateValue.date && !dateValue.month && !dateValue.year) {
             handleCurrentDate();
         }
     }, [showCalendar]);
 
-    const handlePrev = (e) => {
-        e.preventDefault();
+    // Update button disabled state based on dateValue and min/max year/month
+    useEffect(() => {
+        setButtonDisabled({
+            prev: dateValue.month === 0 && dateValue.year === minYear,
+            next: dateValue.month === 11 && dateValue.year === maxYear
+        });
+    }, [dateValue, minYear, maxYear, isDisabled]);
 
-        setDateValue(prev => {
-            const newMonth = prev.month == 0 ? 11 : prev.month - 1;
-            const newYear = prev.month == 0 ? prev.year - 1 : prev.year;
+    // Effects END
 
-            if (isDisabled) return;
-
-            return {
-                ...prev,
-                month: newMonth,
-                year: newYear
-            };
-        })
-    };
-
-    const handleNext = (e) => {
-        e.preventDefault();
-        setDateValue(prev => {
-            const newMonth = prev.month == 11 ? 0 : prev.month + 1;
-            const newYear = prev.month == 11 ? prev.year + 1 : prev.year;
-
-            if (isDisabled) return;
-
-            return {
-                ...prev,
-                month: newMonth,
-                year: newYear
-            };
-        })
-    };
+    // Logic & Data START
 
     const getDaysInMonth = (month, year) => {
         return new Date(year, month + 1, 0).getDate();
@@ -166,58 +235,32 @@ const DatePicker = ({
         return false;
     };
 
-    const handleDateClick = (e) => {
-        const selectedDate = e.target?.textContent;
+    const resolvedLocale =
+        typeof locale === "string"
+        ? i18n[locale] || i18n[locale.split("-")[0]] || i18n.en
+        : locale;
 
-        if (selectedDate) {
-            setDateValue(prev => ({
-                ...prev,
-                date: Number(selectedDate)
-            }))
-        }
-    }
+    const daysOfWeekOptions = resolvedLocale.dayOfWeekShort || [
+        "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
+    ];
 
-    const handleCalendarCellClasses = (cellDate) => {
-        const today = new Date()
-        const {date, month, year} = dateValue;
-
-        const isToday = 
-            Number(cellDate) === today.getDate() &&
-            month === today.getMonth() &&
-            year === today.getFullYear();
-
-        const isSelected = 
-            Number(cellDate) === date &&
-            month !== "" &&
-            year !== "";
-
-        if (isToday) {
-            return " calendar__date-cell--today"
-        } else if (isSelected) {
-            return " calendar__date-cell--selected"
-        } else {
-            return "";
-        }
-    }
-
-    const daysOfWeekOptions = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
-
-    const monthsOptions = [
+    const monthsOptions = resolvedLocale.months || [
         "Jan", "Feb", "Mar", "Apr", "May", "Jun",
         "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
     ];
 
-    const yearsOptions = Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - i);
+    const yearsOptions = Array.from({ length: maxYear - minYear + 1 }, (_, i) => maxYear - i);
 
-    console.log("Date Value:", dateValue);
-    console.log("Input Value:", inputValue);
+    const classNames = [inputClassName, isValid && "is-valid", isInvalid && "is-invalid"].filter(Boolean);
+
+    // Logic & Data END
 
     return (
         <div className="datepicker-wrapper">
             <input 
                 type="text" 
                 id={inputId}
-                className={`${inputClassName} ${isInvalid === true ? "is-invalid" : ""} ${isValid === true ? "is-valid" : ""}`}
+                className={classNames.join(" ")}
                 placeholder="dd/mm/yyyy"
                 value={inputValue}
                 required={isRequired}
@@ -249,11 +292,11 @@ const DatePicker = ({
                     <div className="calendar__content">
                         <div className="calendar__header">
                             <HomeIcon className="calendar__icon calendar__icon--home" onClick={handleCurrentDate} />
-                            <span className="calendar__title">Select Date</span>
+                            <span className="calendar__title">{resolvedLocale.selectDate || "Select Date"}</span>
                             <button className="calendar__close calendar__icon--close" onClick={() => setShowCalendar(false)}>×</button>
                         </div>
                         <div className="calendar__nav">
-                            <button className="calendar__icon calendar__icon--prev" onClick={handlePrev} aria-label="Previous Month">
+                            <button className={`calendar__icon calendar__icon--prev ${buttonDisabled.prev ? "button--disabled" : ""}`} onClick={handlePrev} aria-label="Previous Month">
                                 <ChevronLeftIcon />
                             </button>
                             <div className="calendar__date">
@@ -278,7 +321,7 @@ const DatePicker = ({
                                     ))}
                                 </select>
                             </div>
-                            <button className="calendar__icon calendar__icon--next" onClick={handleNext} aria-label="Next Month">
+                            <button className={`calendar__icon calendar__icon--next ${buttonDisabled.next ? "button--disabled" : ""}`} onClick={handleNext} aria-label="Next Month">
                                 <ChevronRightIcon />
                             </button>
                         </div>

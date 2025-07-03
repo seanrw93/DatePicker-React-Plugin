@@ -60,6 +60,12 @@
         gap: 5px;
     }
 
+    &__day {
+        justify-self: center;
+        font-weight: 600;
+        color: $darkest-grey;
+    }
+
     &__date {
         
         select {
@@ -80,13 +86,15 @@
                 box-shadow: 0 0 0 2px rgba(0,123,255,0.15);
             }
 
-            &:last-child {
+            &:last-of-type {
                 margin-right: 0;
             }
         }
-    }
 
-    
+        #month {
+           width:fit-content;
+        }
+    }
 
     &__dates {
         display: grid;
@@ -101,6 +109,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        justify-self: center;
         border-radius: 50%;
         cursor: pointer;
         user-select: none;
