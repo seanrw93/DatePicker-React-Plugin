@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, useMemo } from "react"
 import { CSSTransition } from "react-transition-group";
 import { HomeIcon, ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { i18n } from "./utils/i18nDateData";
@@ -34,6 +34,7 @@ const DatePicker = ({
     const calendarRef = useRef(null);
 
     // States and Refs END
+
 
     // Handlers START
 
@@ -162,6 +163,7 @@ const DatePicker = ({
 
     // Handlers END
 
+
     // Effects START
 
     // Update input value when dateValue changes
@@ -189,6 +191,7 @@ const DatePicker = ({
     }, [dateValue, minYear, maxYear, isDisabled]);
 
     // Effects END
+
 
     // Logic & Data START
 
@@ -235,10 +238,12 @@ const DatePicker = ({
         return false;
     };
 
-    const resolvedLocale =
-        typeof locale === "string"
+    // Memoize resolved locale to avoid unnecessary recalculations
+    const resolvedLocale = useMemo(() => {
+        return typeof locale === "string"
         ? i18n[locale] || i18n[locale.split("-")[0]] || i18n.en
         : locale;
+    }, [locale]);
 
     const daysOfWeekOptions = resolvedLocale.dayOfWeekShort || [
         "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
