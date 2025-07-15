@@ -1,12 +1,60 @@
-# React + Vite
+# React DatePicker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A fully customisable and modular React datepicker component with internationalisation (i18n) support.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Select single dates
+- Customisable date format
+- Disable specific dates or ranges
+- Localization support
 
-## Expanding the ESLint configuration
+## Installation
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npm install react-datepicker-i18n
+```
+
+## Usage
+
+```jsx
+import DatePicker from 'react-datepicker-i18n';
+
+<DatePicker
+    inputId="my-datepicker"
+    inputClassName="custom-datepicker-input"
+    isRequired={true}
+    isInvalid={false}
+    isValid={true}
+    isDisabled={false}
+    maxDate={new Date(2025, 11, 31)}
+    minDate={new Date(2020, 0, 1)}
+    minYear={2000}
+    maxYear={2030}
+    locale="fr"
+/>
+
+```
+
+## DatePicker Props
+
+All props are **optional**. Defaults are shown below.
+
+| Prop              | Type      | Default                        | Description                                  |
+|-------------------|-----------|--------------------------------|----------------------------------------------|
+| `inputId`         | string    | `""`                           | ID for the input field                       |
+| `inputClassName`  | string    | `""`                           | CSS class(es) for the input field            |
+| `isRequired`      | boolean   | `false`                        | Marks the input as required                  |
+| `isInvalid`       | boolean   | `null`                         | Marks the input as invalid                   |
+| `isValid`         | boolean   | `null`                         | Marks the input as valid                     |
+| `isDisabled`      | boolean   | `false`                        | Disables the input and calendar              |
+| `maxDate`         | Date      | `undefined`                    | Maximum selectable date                      |
+| `minDate`         | Date      | `undefined`                    | Minimum selectable date                      |
+| `minYear`         | number    | `new Date().getFullYear() - 100`| Minimum selectable year                     |
+| `maxYear`         | number    | `new Date().getFullYear()`     | Maximum selectable year                      |
+| `locale`          | string    | `"en-gb"`                      | Locale for date format and language          |
+
+
+## License
+
+MIT
