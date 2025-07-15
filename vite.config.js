@@ -5,8 +5,8 @@ export default defineConfig({
   plugins: [react()],
   build: {
     lib: {
-      entry: 'src/index.js', // or src/index.jsx
-      name: 'ReactDatepickerI18n',
+      entry: 'src/index.js', 
+      name: 'ReactI18nDatepicker',
       fileName: (format) => `index.${format}.js`,
     },
     rollupOptions: {

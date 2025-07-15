@@ -1,1 +1,2 @@
-export { default as DatePicker } from './DatePicker';
+export * from './index.es.js';
+export { default } from './DatePicker';

@@ -1,13 +1,14 @@
 {
-  "name": "react-datepicker-i18n",
+  "name": "react-i18n-datepicker",
   "version": "1.0.0",
   "description": "A customisable and modular React datepicker component with i18n support.",
-  "main": "dist/index.umd.js",
+  "main": "dist/index.js",
   "module": "dist/index.es.js",
   "exports": {
     ".": {
       "import": "./dist/index.es.js",
-      "require": "./dist/index.umd.js"
+      "require": "./dist/index.js",
+      "default": "./dist/index.es.js"
     }
   },
   "files": [
