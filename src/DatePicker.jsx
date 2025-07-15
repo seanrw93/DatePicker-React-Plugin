@@ -11,6 +11,9 @@ import Calendar from "./components/organisms/Calendar";
 const DatePicker = ({
   inputId = "",
   inputClassName = "",
+  inputName = "",
+  value,
+  onInputChange = () => {},
   isRequired = false,
   isInvalid = null,
   isValid = null,
@@ -53,7 +56,7 @@ const DatePicker = ({
     }));
   };
 
-  const handleInputChange = (e) => {
+  const handleDateFormat = (e) => {
     let rawValue = e.target.value.replace(/\D/g, "");
     let format = resolvedLocale.dateFormat || "DD/MM/YYYY";
     // Detect separator (supports "/", "-", ".")
@@ -173,6 +176,11 @@ const DatePicker = ({
         ...prev,
         date: Number(selectedDate),
       }));
+      const newDateObj = new Date(
+        dateValue.year,
+        dateValue.month,
+        Number(selectedDate)
+      );
     }
     setShowCalendar(false);
   };
@@ -186,8 +194,13 @@ const DatePicker = ({
           ...prev,
           date: Number(selectedDate),
         }));
-        setShowCalendar(false);
+        const newDateObj = new Date(
+          dateValue.year,
+          dateValue.month,
+          Number(selectedDate)
+        );
       }
+      setShowCalendar(false);
     }
   };
 
@@ -222,6 +235,13 @@ const DatePicker = ({
     const yyyy = dateObj.getFullYear();
 
     return format.replace("DD", dd).replace("MM", mm).replace("YYYY", yyyy);
+  };
+
+  const getDisplayValue = (isoDate, format) => {
+    if (!isoDate) return "";
+    const dateObj = new Date(isoDate);
+    if (isNaN(dateObj.getTime())) return "";
+    return formatDateByLocale(dateObj, format);
   };
 
   const getDaysInMonth = (month, year) => {
@@ -303,6 +323,7 @@ const DatePicker = ({
     { length: maxYear - minYear + 1 },
     (_, i) => maxYear - i
   );
+  
 
   const classNames = [
     inputClassName,
@@ -358,13 +379,15 @@ const DatePicker = ({
     <div className="datepicker-wrapper">
       <DateInput
         id={inputId}
+        name={inputName}
         className={classNames.join(" ")}
         placeholder={resolvedLocale.dateFormat || "DD/MM/YYYY"}
-        value={inputValue}
+        value={getDisplayValue(value, resolvedLocale.dateFormat) || inputValue}
         required={isRequired}
         disabled={isDisabled}
+        onInputChange={onInputChange}
         onFocus={handleInputFocus}
-        onChange={handleInputChange}
+        handleDateFormat={handleDateFormat}
         aria-label="Date Picker Input"
         aria-controls="calendar"
         aria-haspopup="dialog"

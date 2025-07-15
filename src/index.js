@@ -1,2 +1,3 @@
-export * from './index.es.js';
+import './styles/app.scss';
+
 export { default } from './DatePicker';
