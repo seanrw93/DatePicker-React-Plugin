@@ -44,6 +44,9 @@ All props are **optional**. Defaults are shown below.
 |-------------------|-----------|--------------------------------|----------------------------------------------|
 | `inputId`         | string    | `""`                           | ID for the input field                       |
 | `inputClassName`  | string    | `""`                           | CSS class(es) for the input field            |
+| `inputName`       | string    | `""`                           | Name attribute for the input field           |
+| `value`           | string    | `undefined`                    | Controlled value (ISO date string)           |
+| `onInputChange`   | function  | `() => {}`                     | Callback when input value changes            |
 | `isRequired`      | boolean   | `false`                        | Marks the input as required                  |
 | `isInvalid`       | boolean   | `null`                         | Marks the input as invalid                   |
 | `isValid`         | boolean   | `null`                         | Marks the input as valid                     |
@@ -53,7 +56,6 @@ All props are **optional**. Defaults are shown below.
 | `minYear`         | number    | `new Date().getFullYear() - 100`| Minimum selectable year                     |
 | `maxYear`         | number    | `new Date().getFullYear()`     | Maximum selectable year                      |
 | `locale`          | string    | `"en-gb"`                      | Locale for date format and language          |
-
 
 ## License
 
