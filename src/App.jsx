@@ -1,19 +1,18 @@
-import { useId } from 'react'
-import DatePicker from './DatePicker'
+import { useId } from "react";
+import DatePicker from "./DatePicker";
 
 function App() {
-
-    const today = new Date();
-    const monthAgo = new Date();
-    monthAgo.setMonth(today.getMonth() - 1);
-  
+  const today = new Date();
+  const monthAgo = new Date();
+  monthAgo.setMonth(today.getMonth() - 1);
 
   return (
-    <DatePicker 
+    <DatePicker
       inputId={`datepicker-${useId()}`}
-      inputClassName='datepicker-input'
+      inputClassName="datepicker-input"
+      locale="fr"
     />
-  )
+  );
 }
 
 export default App;

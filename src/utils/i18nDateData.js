@@ -8,6 +8,7 @@ export const i18n = {
         ],
         dayOfWeek: ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت", "الأحد"],
         selectDate: "اختر التاريخ",
+        dateFormat: "DD/MM/YYYY", 
     },
     ro: { // Romanian
         months: [
@@ -18,6 +19,7 @@ export const i18n = {
         ],
         dayOfWeek: ["Duminică", "Luni", "Marţi", "Miercuri", "Joi", "Vineri", "Sâmbătă"],
         selectDate: "Selectați data",
+        dateFormat: "DD/MM/YYYY",
     },
     id: { // Indonesian
         months: [
@@ -28,6 +30,7 @@ export const i18n = {
         ],
         dayOfWeek: ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"],
         selectDate: "Pilih tanggal",
+        dateFormat: "DD/MM/YYYY",
     },
     is: { // Icelandic
         months: [
@@ -38,6 +41,7 @@ export const i18n = {
         ],
         dayOfWeek: ["Sunnudagur", "Mánudagur", "Þriðjudagur", "Miðvikudagur", "Fimmtudagur", "Föstudagur", "Laugardagur"],
         selectDate: "Veldu dagsetningu",
+        dateFormat: "DD/MM/YYYY",
     },
     bg: { // Bulgarian
         months: [
@@ -48,6 +52,7 @@ export const i18n = {
         ],
         dayOfWeek: ["Неделя", "Понеделник", "Вторник", "Сряда", "Четвъртък", "Петък", "Събота"],
         selectDate: "Изберете дата",
+        dateFormat: "DD/MM/YYYY",
     },
     fa: { // Persian/Farsi
         months: [
@@ -58,6 +63,7 @@ export const i18n = {
         ],
         dayOfWeek: ["یک‌شنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنج‌شنبه", "جمعه", "شنبه", "یک‌شنبه"],
         selectDate: "تاریخ را انتخاب کنید",
+        dateFormat: "YYYY/MM/DD",
     },
     ru: { // Russian
         months: [
@@ -68,6 +74,7 @@ export const i18n = {
         ],
         dayOfWeek: ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"],
         selectDate: "Выберите дату",
+        dateFormat: "DD.MM.YYYY",
     },
     uk: { // Ukrainian
         months: [
@@ -78,6 +85,7 @@ export const i18n = {
         ],
         dayOfWeek: ["Неділя", "Понеділок", "Вівторок", "Середа", "Четвер", "П'ятниця", "Субота"],
         selectDate: "Виберіть дату",
+        dateFormat: "DD.MM.YYYY",
     },
     en: { // English
         months: [
@@ -88,6 +96,7 @@ export const i18n = {
         ],
         dayOfWeek: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
         selectDate: "Select Date",
+        dateFormat: "MM/DD/YYYY", // Default format for English
     },
     el: { // Ελληνικά
         months: [
@@ -98,6 +107,7 @@ export const i18n = {
         ],
         dayOfWeek: ["Κυριακή", "Δευτέρα", "Τρίτη", "Τετάρτη", "Πέμπτη", "Παρασκευή", "Σάββατο"],
         selectDate: "Επιλέξτε Ημερομηνία",
+        dateFormat: "DD/MM/YYYY",
     },
     de: { // German
         months: [
@@ -108,6 +118,7 @@ export const i18n = {
         ],
         dayOfWeek: ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"],
         selectDate: "Datum auswählen",
+        dateFormat: "DD.MM.YYYY",
     },
     nl: { // Dutch
         months: [
@@ -118,6 +129,7 @@ export const i18n = {
         ],
         dayOfWeek: ["zondag", "maandag", "dinsdag", "woensdag", "donderdag", "vrijdag", "zaterdag"],
         selectDate: "Selecteer datum",
+        dateFormat: "DD-MM-YYYY",
     },
     tr: { // Turkish
         months: [
@@ -128,6 +140,7 @@ export const i18n = {
         ],
         dayOfWeek: ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"],
         selectDate: "Tarih seçin",
+        dateFormat: "DD.MM.YYYY",
     },
     fr: { //French
         months: [
@@ -138,6 +151,7 @@ export const i18n = {
         ],
         dayOfWeek: ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"],
         selectDate: "Sélectionnez une date",
+        dateFormat: "DD/MM/YYYY",
     },
     es: { // Spanish
         months: [
@@ -148,6 +162,7 @@ export const i18n = {
         ],
         dayOfWeek: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
         selectDate: "Seleccionar fecha",
+        dateFormat: "DD/MM/YYYY",
     },
     th: { // Thai
         months: [
@@ -158,6 +173,7 @@ export const i18n = {
         ],
         dayOfWeek: ["อาทิตย์", "จันทร์", "อังคาร", "พุธ", "พฤหัส", "ศุกร์", "เสาร์", "อาทิตย์"],
         selectDate: "เลือกวันที่",
+        dateFormat: "DD/MM/YYYY",
     },
     pl: { // Polish
         months: [
@@ -168,6 +184,7 @@ export const i18n = {
         ],
         dayOfWeek: ["niedziela", "poniedziałek", "wtorek", "środa", "czwartek", "piątek", "sobota"],
         selectDate: "Wybierz datę",
+        dateFormat: "DD.MM.YYYY",
     },
     pt: { // Portuguese
         months: [
@@ -178,6 +195,7 @@ export const i18n = {
         ],
         dayOfWeek: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
         selectDate: "Selecione a data",
+        dateFormat: "DD/MM/YYYY",
     },
     ch: { // Simplified Chinese
         months: [
@@ -188,6 +206,7 @@ export const i18n = {
         ],
         dayOfWeek: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
         selectDate: "选择日期",
+        dateFormat: "YYYY/MM/DD",
     },
     se: { // Swedish
         months: [
@@ -198,6 +217,7 @@ export const i18n = {
         ],
         dayOfWeek: ["Söndag", "Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag"],
         selectDate: "Välj datum",
+        dateFormat: "YYYY-MM-DD",
     },
     km: { // Khmer (ភាសាខ្មែរ)
         months: [
@@ -216,6 +236,7 @@ export const i18n = {
         ],
         dayOfWeek: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
         selectDate: "날짜 선택",
+        dateFormat: "YYYY-MM-DD",
     },
     it: { // Italian
         months: [
@@ -226,6 +247,7 @@ export const i18n = {
         ],
         dayOfWeek: ["Domenica", "Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"],
         selectDate: "Seleziona data",
+        dateFormat: "DD/MM/YYYY",
     },
     da: { // Dansk
         months: [
@@ -236,6 +258,7 @@ export const i18n = {
         ],
         dayOfWeek: ["søndag", "mandag", "tirsdag", "onsdag", "torsdag", "fredag", "lørdag"],
         selectDate: "Vælg dato",
+        dateFormat: "DD/MM/YYYY",
     },
     no: { // Norwegian
         months: [
@@ -246,6 +269,7 @@ export const i18n = {
         ],
         dayOfWeek: ['Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag'],
         selectDate: "Velg dato",
+        dateFormat: "DD.MM.YYYY",
     },
     ja: { // Japanese
         months: [
@@ -256,6 +280,7 @@ export const i18n = {
         ],
         dayOfWeek: ["日曜", "月曜", "火曜", "水曜", "木曜", "金曜", "土曜"],
         selectDate: "日付を選択",
+        dateFormat: "YYYY/MM/DD",
     },
     vi: { // Vietnamese
         months: [
@@ -266,6 +291,7 @@ export const i18n = {
         ],
         dayOfWeek: ["Chủ nhật", "Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy"],
         selectDate: "Chọn ngày",
+        dateFormat: "DD/MM/YYYY",
     },
     sl: { // Slovenščina
         months: [
@@ -276,6 +302,7 @@ export const i18n = {
         ],
         dayOfWeek: ["Nedelja", "Ponedeljek", "Torek", "Sreda", "Četrtek", "Petek", "Sobota"],
         selectDate: "Izberite datum",
+        dateFormat: "DD.MM.YYYY",
     },
     cs: { // Čeština
         months: [
@@ -286,6 +313,7 @@ export const i18n = {
         ],
         dayOfWeek: ["Neděle", "Pondělí", "Úterý", "Středa", "Čtvrtek", "Pátek", "Sobota"],
         selectDate: "Vyberte datum",
+        dateFormat: "DD.MM.YYYY",
     },
     hu: { // Hungarian
         months: [
@@ -296,6 +324,7 @@ export const i18n = {
         ],
         dayOfWeek: ["vasárnap", "hétfő", "kedd", "szerda", "csütörtök", "péntek", "szombat"],
         selectDate: "Válasszon dátumot",
+        dateFormat: "YYYY.MM.DD",
     },
     az: { //Azerbaijanian (Azeri)
         months: [
@@ -306,6 +335,7 @@ export const i18n = {
         ],
         dayOfWeek: ["Bazar", "Bazar ertəsi", "Çərşənbə axşamı", "Çərşənbə", "Cümə axşamı", "Cümə", "Şənbə"],
         selectDate: "Tarixi seçin",
+        dateFormat: "DD.MM.YYYY",
     },
     bs: { //Bosanski
         months: [
@@ -316,6 +346,7 @@ export const i18n = {
         ],
         dayOfWeek: ["Nedjelja","Ponedjeljak", "Utorak", "Srijeda", "Četvrtak", "Petak", "Subota"],
         selectDate: "Odaberite datum",
+        dateFormat: "DD.MM.YYYY",
     },
     ca: { //Català
         months: [
@@ -326,6 +357,7 @@ export const i18n = {
         ],
         dayOfWeek: ["Diumenge", "Dilluns", "Dimarts", "Dimecres", "Dijous", "Divendres", "Dissabte"],
         selectDate: "Selecciona una data",
+        dateFormat: "DD/MM/YYYY",
     },
     'en-GB': { //English (British)
         months: [
@@ -336,6 +368,7 @@ export const i18n = {
         ],
         dayOfWeek: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
         selectDate: "Select Date",
+        dateFormat: "DD/MM/YYYY", // Default format for British English
     },
     et: { //"Eesti"
         months: [
@@ -346,6 +379,7 @@ export const i18n = {
         ],
         dayOfWeek: ["Pühapäev", "Esmaspäev", "Teisipäev", "Kolmapäev", "Neljapäev", "Reede", "Laupäev"],
         selectDate: "Vali kuupäev",
+        dateFormat: "DD.MM.YYYY",
     },
     eu: { //Euskara
         months: [
@@ -356,6 +390,7 @@ export const i18n = {
         ],
         dayOfWeek: ['Igandea', 'Astelehena', 'Asteartea', 'Asteazkena', 'Osteguna', 'Ostirala', 'Larunbata'],
         selectDate: "Data hautatu",
+        dateFormat: "DD/MM/YYYY",
     },
     fi: { //Finnish (Suomi)
         months: [
@@ -366,6 +401,7 @@ export const i18n = {
         ],
         dayOfWeek: ["sunnuntai", "maanantai", "tiistai", "keskiviikko", "torstai", "perjantai", "lauantai"],
         selectDate: "Valitse päivämäärä",
+        dateFormat: "DD.MM.YYYY",
     },
     gl: { //Galego
         months: [
@@ -376,6 +412,7 @@ export const i18n = {
         ],
         dayOfWeek: ["Domingo", "Luns", "Martes", "Mércores", "Xoves", "Venres", "Sábado"],
         selectDate: "Selecciona unha data",
+        dateFormat: "DD/MM/YYYY",
     },
     hr: { //Hrvatski
         months: [
@@ -386,6 +423,7 @@ export const i18n = {
         ],
         dayOfWeek: ["Nedjelja", "Ponedjeljak", "Utorak", "Srijeda", "Četvrtak", "Petak", "Subota"],
         selectDate: "Odaberite datum",
+        dateFormat: "DD.MM.YYYY",
     },
     ko: { //Korean (한국어)
         months: [
@@ -396,6 +434,7 @@ export const i18n = {
         ],
         dayOfWeek: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
         selectDate: "날짜 선택",
+        dateFormat: "YYYY-MM-DD",
     },
     lt: { //Lithuanian (lietuvių)
         months: [
@@ -406,6 +445,7 @@ export const i18n = {
         ],
         dayOfWeek: ["Sekmadienis", "Pirmadienis", "Antradienis", "Trečiadienis", "Ketvirtadienis", "Penktadienis", "Šeštadienis"],
         selectDate: "Pasirinkite datą",
+        dateFormat: "YYYY-MM-DD",
     },
     lv: { //Latvian (Latviešu)
         months: [
@@ -416,6 +456,7 @@ export const i18n = {
         ],
         dayOfWeek: ["Svētdiena", "Pirmdiena", "Otrdiena", "Trešdiena", "Ceturtdiena", "Piektdiena", "Sestdiena"],
         selectDate: "Izvēlieties datumu",
+        dateFormat: "DD.MM.YYYY",
     },
     mk: { //Macedonian (Македонски)
         months: [
@@ -426,6 +467,7 @@ export const i18n = {
         ],
         dayOfWeek: ["Недела", "Понеделник", "Вторник", "Среда", "Четврток", "Петок", "Сабота"],
         selectDate: "Изберете датум",
+        dateFormat: "DD.MM.YYYY",
     },
     mn: { //Mongolian (Монгол)
         months: [
@@ -436,6 +478,7 @@ export const i18n = {
         ],
         dayOfWeek: ["Даваа", "Мягмар", "Лхагва", "Пүрэв", "Баасан", "Бямба", "Ням"],
         selectDate: "Огноо сонгох",
+        dateFormat: "YYYY-MM-DD",
     },
     'pt-BR': { //Português(Brasil)
         months: [
@@ -446,6 +489,7 @@ export const i18n = {
         ],
         dayOfWeek: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
         selectDate: "Selecione a data",
+        dateFormat: "DD/MM/YYYY",
     },
     sk: { //Slovenčina
         months: [
@@ -456,6 +500,7 @@ export const i18n = {
         ],
         dayOfWeek: ["Nedeľa", "Pondelok", "Utorok", "Streda", "Štvrtok", "Piatok", "Sobota"],
         selectDate: "Vyberte dátum",
+        dateFormat: "DD.MM.YYYY",
     },
     sq: { //Albanian (Shqip)
         months: [
@@ -466,6 +511,7 @@ export const i18n = {
         ],
         dayOfWeek: ["E Diel", "E Hënë", "E Martē", "E Mërkurë", "E Enjte", "E Premte", "E Shtunë"],
         selectDate: "Zgjidhni datën",
+        dateFormat: "DD/MM/YYYY",
     },
     'sr-YU': { //Serbian (Srpski)
         months: [
@@ -476,6 +522,7 @@ export const i18n = {
         ],
         dayOfWeek: ["Nedelja","Ponedeljak", "Utorak", "Sreda", "Četvrtak", "Petak", "Subota"],
         selectDate: "Izaberite datum",
+        dateFormat: "DD.MM.YYYY",
     },
     sr: { //Serbian Cyrillic (Српски)
         months: [
@@ -486,6 +533,7 @@ export const i18n = {
         ],
         dayOfWeek: ["Недеља","Понедељак", "Уторак", "Среда", "Четвртак", "Петак", "Субота"],
         selectDate: "Изаберите датум",
+        dateFormat: "DD.MM.YYYY",
     },
     sv: { //Svenska
         months: [
@@ -496,6 +544,7 @@ export const i18n = {
         ],
         dayOfWeek: ["Söndag", "Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag"],
         selectDate: "Välj datum",
+        dateFormat: "YYYY-MM-DD",
     },
     'zh-TW': { //Traditional Chinese (繁體中文)
         months: [
@@ -506,6 +555,7 @@ export const i18n = {
         ],
         dayOfWeek: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
         selectDate: "選擇日期",
+        dateFormat: "YYYY/MM/DD",
     },
     zh: { //Simplified Chinese (简体中文)
         months: [
@@ -516,6 +566,7 @@ export const i18n = {
         ],
         dayOfWeek: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
         selectDate: "选择日期",
+        dateFormat: "YYYY/MM/DD",
     },
     ug:{ // Uyghur(ئۇيغۇرچە)
         months: [
@@ -528,6 +579,7 @@ export const i18n = {
             "يە", "دۈ", "سە", "چا", "پە", "جۈ", "شە"
         ],
         selectDate: "تارىخ تاللاڭ",
+        dateFormat: "YYYY-MM-DD",
     },
     he: { //Hebrew (עברית)
         months: [
@@ -538,6 +590,7 @@ export const i18n = {
         ],
         dayOfWeek: ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת", "ראשון"],
         selectDate: "בחר תאריך",
+        dateFormat: "DD/MM/YYYY",
     },
     hy: { // Armenian
         months: [
@@ -548,6 +601,7 @@ export const i18n = {
         ],
         dayOfWeek: ["Կիրակի", "Երկուշաբթի", "Երեքշաբթի", "Չորեքշաբթի", "Հինգշաբթի", "Ուրբաթ", "Շաբաթ"],
         selectDate: "Ընտրեք ամսաթիվը",
+        dateFormat: "DD/MM/YYYY",
     },
     kg: { // Kyrgyz
         months: [
@@ -560,6 +614,7 @@ export const i18n = {
             "Жекшемб", "Дүйшөмб", "Шейшемб", "Шаршемб", "Бейшемби", "Жума", "Ишенб"
         ],
         selectDate: "Күндү тандаңыз",
+        dateFormat: "DD.MM.YYYY",
     },
     rm: { // Romansh
         months: [
@@ -572,6 +627,7 @@ export const i18n = {
             "Dumengia", "Glindesdi", "Mardi", "Mesemna", "Gievgia", "Venderdi", "Sonda"
         ],
         selectDate: "Selecziunar data",
+        dateFormat: "DD.MM.YYYY",
     },
     ka: { // Georgian
         months: [
@@ -582,6 +638,7 @@ export const i18n = {
         ],
         dayOfWeek: ["კვირა", "ორშაბათი", "სამშაბათი", "ოთხშაბათი", "ხუთშაბათი", "პარასკევი", "შაბათი"],
         selectDate: "აირჩიეთ თარიღი",
+        dateFormat: "DD/MM/YYYY",
     },
     kk: { // Kazakh
         months: [
@@ -592,5 +649,6 @@ export const i18n = {
         ],
         dayOfWeek: ["Жексенбі", "Дүйсенбі", "Сейсенбі", "Сәрсенбі", "Бейсенбі", "Жұма", "Сенбі"],
         selectDate: "Күнді таңдаңыз",
+        dateFormat: "DD.MM.YYYY",
     }
 }
