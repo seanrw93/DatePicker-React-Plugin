@@ -327,6 +327,7 @@ const DatePicker = ({
 
   const classNames = [
     inputClassName,
+    "datepicker-input",
     isValid && "is-valid",
     isInvalid && "is-invalid",
   ].filter(Boolean);

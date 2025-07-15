@@ -9,7 +9,6 @@ function App() {
   return (
     <DatePicker
       inputId={`datepicker-${useId()}`}
-      inputClassName="datepicker-input"
       locale="fr"
     />
   );
