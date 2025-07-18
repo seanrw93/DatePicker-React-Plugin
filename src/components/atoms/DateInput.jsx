@@ -5,9 +5,9 @@ const DateInput = ({ value, name, handleDateFormat, onInputChange, onFocus, ...r
         type="text"
         name={name}
         value={value}
-        onChange={() => {
-          handleDateFormat(),
-          onInputChange();
+        onChange={(e) => {
+          handleDateFormat(e);
+          onInputChange(e);
         }}
         onFocus={onFocus}
         {...rest}

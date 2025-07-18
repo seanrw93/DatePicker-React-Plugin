@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useMemo } from "react";
 import { CSSTransition } from "react-transition-group";
 import { i18n } from "./utils/i18nDateData";
+import "./styles/app.scss";
 
 //Imported atoms
 import DateInput from "./components/atoms/DateInput";
@@ -12,7 +13,6 @@ const DatePicker = ({
   inputId = "",
   inputClassName = "",
   inputName = "",
-  value,
   onInputChange = () => {},
   isRequired = false,
   isInvalid = null,
@@ -48,14 +48,7 @@ const DatePicker = ({
     setShowCalendar(true);
   };
 
-  const handleDateChange = (e) => {
-    const { name, value } = e.target;
-    setDateValue((prev) => ({
-      ...prev,
-      [name]: Number(value),
-    }));
-  };
-
+  // Handle date formatting and validation
   const handleDateFormat = (e) => {
     let rawValue = e.target.value.replace(/\D/g, "");
     let format = resolvedLocale.dateFormat || "DD/MM/YYYY";
@@ -167,6 +160,14 @@ const DatePicker = ({
       };
     });
   };
+
+  // const handleDateChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setDateValue((prev) => ({
+  //     ...prev,
+  //     [name]: Number(value),
+  //   }));
+  // };
 
   const handleDateClick = (e) => {
     const selectedDate = e.target?.textContent;
@@ -383,7 +384,7 @@ const DatePicker = ({
         name={inputName}
         className={classNames.join(" ")}
         placeholder={resolvedLocale.dateFormat || "DD/MM/YYYY"}
-        value={getDisplayValue(value, resolvedLocale.dateFormat) || inputValue}
+        value={inputValue}
         required={isRequired}
         disabled={isDisabled}
         onInputChange={onInputChange}
@@ -409,7 +410,6 @@ const DatePicker = ({
           handlePrev={handlePrev}
           handleNext={handleNext}
           handleCurrentDate={handleCurrentDate}
-          handleDateChange={handleDateChange}
           handleDateClick={handleDateClick}
           handleDateKeyUp={handleDateKeyUp}
           handleCalendarCellClasses={handleCalendarCellClasses}

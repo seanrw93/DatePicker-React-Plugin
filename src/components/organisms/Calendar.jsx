@@ -49,7 +49,7 @@ const Calendar = ({
           }`}
           onClick={handlePrev}
           direction="left"
-          aria-label="Previous Month"
+          ariaLabel="Previous Month"
         />
         <div className="calendar__date">
           <Select
@@ -73,7 +73,7 @@ const Calendar = ({
           }`}
           onClick={handleNext}
           direction="right"
-          aria-label="Next Month"
+          ariaLabel="Next Month"
         />
       </div>
       <div className="calendar__days">

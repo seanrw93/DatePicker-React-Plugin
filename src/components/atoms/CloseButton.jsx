@@ -1,6 +1,7 @@
 const CloseButton = ({ onClick }) => {
   return (
     <button
+      type="button"
       className="calendar__close calendar__icon--close"
       onClick={onClick}
       aria-label="Close calendar"

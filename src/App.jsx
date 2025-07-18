@@ -1,14 +1,13 @@
-import { useId } from "react";
+import { useState } from "react";
 import DatePicker from "./DatePicker";
 
 function App() {
-  const today = new Date();
-  const monthAgo = new Date();
-  monthAgo.setMonth(today.getMonth() - 1);
+  const [date, setDate] = useState("");
 
   return (
     <DatePicker
-      inputId={`datepicker-${useId()}`}
+      value={date}
+      onInputChange={e => setDate(e.target.value)}
       locale="fr"
     />
   );
