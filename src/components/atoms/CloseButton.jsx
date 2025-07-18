@@ -3,7 +3,10 @@ const CloseButton = ({ onClick }) => {
     <button
       type="button"
       className="calendar__close calendar__icon--close"
-      onClick={onClick}
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick();
+      }}
       aria-label="Close calendar"
     >
       ×
