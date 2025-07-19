@@ -39,6 +39,8 @@ const DatePicker = ({
   });
 
   const calendarRef = useRef(null);
+  const wrapperRef = useRef(null);
+
 
   // States and Refs END
 
@@ -161,13 +163,13 @@ const DatePicker = ({
     });
   };
 
-  // const handleDateChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setDateValue((prev) => ({
-  //     ...prev,
-  //     [name]: Number(value),
-  //   }));
-  // };
+  const handleDateChange = (e) => {
+    const { name, value } = e.target;
+    setDateValue((prev) => ({
+      ...prev,
+      [name]: Number(value),
+    }));
+  };
 
   const handleDateClick = (e) => {
     const selectedDate = e.target?.textContent;
@@ -324,7 +326,6 @@ const DatePicker = ({
     { length: maxYear - minYear + 1 },
     (_, i) => maxYear - i
   );
-  
 
   const classNames = [
     inputClassName,
@@ -375,10 +376,28 @@ const DatePicker = ({
     });
   }, [dateValue, minYear, maxYear, isDisabled]);
 
+  // Close calendar when clicking outside
+  useEffect(() => {
+    if (!showCalendar) return;
+
+    const handleClickOutside = (event) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        setShowCalendar(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Cleanup event listener on unmount
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showCalendar]);
+
   // Effects END
 
   return (
-    <div className="datepicker-wrapper">
+    <div className="datepicker-wrapper" ref={wrapperRef}>
       <DateInput
         id={inputId}
         name={inputName}
@@ -410,6 +429,7 @@ const DatePicker = ({
           handlePrev={handlePrev}
           handleNext={handleNext}
           handleCurrentDate={handleCurrentDate}
+          handleDateChange={handleDateChange}
           handleDateClick={handleDateClick}
           handleDateKeyUp={handleDateKeyUp}
           handleCalendarCellClasses={handleCalendarCellClasses}
