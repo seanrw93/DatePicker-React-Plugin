@@ -28,7 +28,6 @@ const DatePicker = ({
   // States and Refs START
 
   const [showCalendar, setShowCalendar] = useState(false);
-  // const [inputValue, setInputValue] = useState("");
   const [dateValue, setDateValue] = useState({
     date: "",
     month: "",
