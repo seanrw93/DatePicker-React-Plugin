@@ -1,15 +1,12 @@
-const DateInput = ({ value, name, handleDateFormat, onInputChange, onFocus, ...rest }) => {
+const DateInput = ({ value, name, handleChange, handleFocus, ...rest }) => {
   return (
     <>
       <input
         type="text"
         name={name}
         value={value}
-        onChange={(e) => {
-          handleDateFormat(e);
-          onInputChange(e);
-        }}
-        onFocus={onFocus}
+        onChange={handleChange}
+        onFocus={handleFocus}
         {...rest}
       />
     </>

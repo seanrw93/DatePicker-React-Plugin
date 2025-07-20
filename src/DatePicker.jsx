@@ -13,7 +13,8 @@ const DatePicker = ({
   inputId = "",
   inputClassName = "",
   inputName = "",
-  onInputChange = () => {},
+  value = "",
+  onChange = () => {},
   isRequired = false,
   isInvalid = null,
   isValid = null,
@@ -27,7 +28,7 @@ const DatePicker = ({
   // States and Refs START
 
   const [showCalendar, setShowCalendar] = useState(false);
-  const [inputValue, setInputValue] = useState("");
+  // const [inputValue, setInputValue] = useState("");
   const [dateValue, setDateValue] = useState({
     date: "",
     month: "",
@@ -51,72 +52,63 @@ const DatePicker = ({
   };
 
   // Handle date formatting and validation
-  const handleDateFormat = (e) => {
-    let rawValue = e.target.value.replace(/\D/g, "");
-    let format = resolvedLocale.dateFormat || "DD/MM/YYYY";
-    // Detect separator (supports "/", "-", ".")
-    const separatorMatch = format.match(/[^A-Za-z]/);
-    const separator = separatorMatch ? separatorMatch[0] : "/";
-    const formatParts = format.split(separator);
+const handleInputChange = (e) => {
+  const input = e.target.value;
+  const format = resolvedLocale.dateFormat || "DD/MM/YYYY";
+  const separatorMatch = format.match(/[^A-Za-z]/);
+  const separator = separatorMatch ? separatorMatch[0] : "/";
+  const formatParts = format.split(separator);
+  const parts = input.split(separator);
 
-    // Build value with separators after each interval
-    let value = "";
-    let cursor = 0;
-    formatParts.forEach((part, idx) => {
-      let len = part === "YYYY" ? 4 : 2;
-      if (rawValue.length >= cursor + len) {
-        value += rawValue.slice(cursor, cursor + len);
-        cursor += len;
-      } else {
-        value += rawValue.slice(cursor);
-        cursor = rawValue.length;
-      }
-      // Add separator if not last part and there's more input
-      if (idx < formatParts.length - 1 && cursor < rawValue.length) {
-        value += separator;
-      }
+  // default output is the raw input
+  let newValue = input;
+
+  if (parts.length === 3) {
+    let day, month, year;
+
+    formatParts.forEach((part, index) => {
+      if (part === "DD") day = parts[index];
+      if (part === "MM") month = parts[index];
+      if (part === "YYYY") year = parts[index];
     });
 
-    setInputValue(value);
+    const isValid =
+      day &&
+      month &&
+      year &&
+      day.length === 2 &&
+      month.length === 2 &&
+      year.length === 4;
 
-    // Parse value into day/month/year according to formatParts
-    const parts = value.split(separator);
-    if (parts.length === 3) {
-      let day, month, year;
-      formatParts.forEach((part, index) => {
-        if (part === "DD") day = parts[index];
-        if (part === "MM") month = parts[index];
-        if (part === "YYYY") year = parts[index];
-      });
+    if (isValid) {
+      let y = parseInt(year);
+      const m = parseInt(month) - 1;
+      const d = parseInt(day);
 
-      if (
-        day &&
-        month &&
-        year &&
-        day.length === 2 &&
-        month.length === 2 &&
-        year.length === 4
-      ) {
-        let numericYear = Number(year);
-        if (numericYear > maxYear) year = String(maxYear);
-        if (numericYear < minYear) year = String(minYear);
+      if (!isNaN(d) && !isNaN(m) && !isNaN(y)) {
+        // Auto-adjust year within bounds
+        if (minYear && y < minYear) y = minYear;
+        if (maxYear && y > maxYear) y = maxYear;
 
-        // Reconstruct value in correct order
-        const reconstructed = format
-          .replace("DD", day)
-          .replace("MM", month)
-          .replace("YYYY", year);
+        const reconstructedDate = new Date(y, m, d);
 
-        setInputValue(reconstructed);
-
+        // Update dateValue used internally by DatePicker
         setDateValue({
-          date: Number(day),
-          month: Number(month) - 1,
-          year: Number(year),
+          date: d,
+          month: m,
+          year: y,
         });
+
+        // Reformat and pass to parent as a controlled value
+        newValue = formatDateByLocale(reconstructedDate, format);
       }
     }
-  };
+  }
+
+  // Always call onChange to update parent-controlled value
+  onChange({ target: { value: newValue } });
+};
+
 
   const handleCurrentDate = () => {
     const today = new Date();
@@ -179,11 +171,6 @@ const DatePicker = ({
         ...prev,
         date: Number(selectedDate),
       }));
-      const newDateObj = new Date(
-        dateValue.year,
-        dateValue.month,
-        Number(selectedDate)
-      );
     }
     setShowCalendar(false);
   };
@@ -197,11 +184,6 @@ const DatePicker = ({
           ...prev,
           date: Number(selectedDate),
         }));
-        const newDateObj = new Date(
-          dateValue.year,
-          dateValue.month,
-          Number(selectedDate)
-        );
       }
       setShowCalendar(false);
     }
@@ -238,13 +220,6 @@ const DatePicker = ({
     const yyyy = dateObj.getFullYear();
 
     return format.replace("DD", dd).replace("MM", mm).replace("YYYY", yyyy);
-  };
-
-  const getDisplayValue = (isoDate, format) => {
-    if (!isoDate) return "";
-    const dateObj = new Date(isoDate);
-    if (isNaN(dateObj.getTime())) return "";
-    return formatDateByLocale(dateObj, format);
   };
 
   const getDaysInMonth = (month, year) => {
@@ -350,9 +325,12 @@ const DatePicker = ({
       !isNaN(year)
     ) {
       const jsDate = new Date(year, month, date);
-      setInputValue(
-        formatDateByLocale(jsDate, resolvedLocale.dateFormat || "DD/MM/YYYY")
-      );
+      onChange({
+        target: {
+          name: inputName,
+          value: formatDateByLocale(jsDate, resolvedLocale.dateFormat || "DD/MM/YYYY"),
+        },
+      });
     }
   }, [dateValue, resolvedLocale]);
 
@@ -403,12 +381,11 @@ const DatePicker = ({
         name={inputName}
         className={classNames.join(" ")}
         placeholder={resolvedLocale.dateFormat || "DD/MM/YYYY"}
-        value={inputValue}
+        value={value}
         required={isRequired}
         disabled={isDisabled}
-        onInputChange={onInputChange}
-        onFocus={handleInputFocus}
-        handleDateFormat={handleDateFormat}
+        handleChange={handleInputChange}
+        handleFocus={handleInputFocus}
         aria-label="Date Picker Input"
         aria-controls="calendar"
         aria-haspopup="dialog"

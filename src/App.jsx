@@ -4,10 +4,15 @@ import DatePicker from "./DatePicker";
 function App() {
   const [date, setDate] = useState("");
 
+  const handleDateChange = (e) => {
+    setDate(e.target.value);
+    console.log("Selected date", e.target.value);
+  };
+
   return (
     <DatePicker
       value={date}
-      onInputChange={e => setDate(e.target.value)}
+      onChange={handleDateChange}
       locale="fr"
     />
   );
