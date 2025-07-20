@@ -381,6 +381,7 @@ const handleInputChange = (e) => {
         className={classNames.join(" ")}
         placeholder={resolvedLocale.dateFormat || "DD/MM/YYYY"}
         value={value}
+        pattern={resolvedLocale.pattern || "\\d{2}/\\d{2}/\\d{4}"}
         required={isRequired}
         disabled={isDisabled}
         handleChange={handleInputChange}

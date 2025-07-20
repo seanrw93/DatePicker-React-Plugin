@@ -11,9 +11,11 @@ function App() {
 
   return (
     <DatePicker
+      inputId="datePicker-123"
+      inputName="datePicker"
       value={date}
       onChange={handleDateChange}
-      locale="fr"
+      locale="zh-CN"
     />
   );
 }

@@ -1,10 +1,11 @@
-const DateInput = ({ value, name, handleChange, handleFocus, ...rest }) => {
+const DateInput = ({ value, name, handleChange, handleFocus, pattern, ...rest }) => {
   return (
     <>
       <input
         type="text"
         name={name}
         value={value}
+        pattern={pattern}
         onChange={handleChange}
         onFocus={handleFocus}
         {...rest}
