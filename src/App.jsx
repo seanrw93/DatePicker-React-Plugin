@@ -15,7 +15,6 @@ function App() {
       inputName="datePicker"
       value={date}
       onChange={handleDateChange}
-      locale="zh-CN"
     />
   );
 }

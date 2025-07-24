@@ -51,63 +51,56 @@ const DatePicker = ({
   };
 
   // Handle date formatting and validation
-const handleInputChange = (e) => {
-  const input = e.target.value;
-  const format = resolvedLocale.dateFormat || "DD/MM/YYYY";
-  const separatorMatch = format.match(/[^A-Za-z]/);
-  const separator = separatorMatch ? separatorMatch[0] : "/";
-  const formatParts = format.split(separator);
-  const parts = input.split(separator);
+  const handleInputChange = (e) => {
+    const input = e.target.value;
+    const format = resolvedLocale.dateFormat || "DD/MM/YYYY";
+    const separatorMatch = format.match(/[^A-Za-z]/);
+    const separator = separatorMatch ? separatorMatch[0] : "/";
+    const formatParts = format.split(separator);
+    const parts = input.split(separator);
 
-  // default output is the raw input
-  let newValue = input;
+    let newValue = input;
 
-  if (parts.length === 3) {
-    let day, month, year;
+    if (parts.length === 3) {
+      let day, month, year;
 
-    formatParts.forEach((part, index) => {
-      if (part === "DD") day = parts[index];
-      if (part === "MM") month = parts[index];
-      if (part === "YYYY") year = parts[index];
-    });
+      formatParts.forEach((part, index) => {
+        if (part === "DD") day = parts[index];
+        if (part === "MM") month = parts[index];
+        if (part === "YYYY") year = parts[index];
+      });
 
-    const isValid =
-      day &&
-      month &&
-      year &&
-      day.length === 2 &&
-      month.length === 2 &&
-      year.length === 4;
+      if (
+        day?.length === 2 &&
+        month?.length === 2 &&
+        year?.length === 4 &&
+        !isNaN(day) &&
+        !isNaN(month) &&
+        !isNaN(year)
+      ) {
+        let parsedDay = parseInt(day, 10);
+        let parsedMonth = parseInt(month, 10) - 1;
+        let parsedYear = parseInt(year, 10);
 
-    if (isValid) {
-      let y = parseInt(year);
-      const m = parseInt(month) - 1;
-      const d = parseInt(day);
+        if (minYear && parsedYear < minYear) parsedYear = minYear;
+        if (maxYear && parsedYear > maxYear) parsedYear = maxYear;
 
-      if (!isNaN(d) && !isNaN(m) && !isNaN(y)) {
-        // Auto-adjust year within bounds
-        if (minYear && y < minYear) y = minYear;
-        if (maxYear && y > maxYear) y = maxYear;
+        const parsedDate = new Date(parsedYear, parsedMonth, parsedDay);
 
-        const reconstructedDate = new Date(y, m, d);
+        if (!isNaN(parsedDate.getTime())) {
+          setDateValue({
+            date: parsedDay,
+            month: parsedMonth,
+            year: parsedYear,
+          });
 
-        // Update dateValue used internally by DatePicker
-        setDateValue({
-          date: d,
-          month: m,
-          year: y,
-        });
-
-        // Reformat and pass to parent as a controlled value
-        newValue = formatDateByLocale(reconstructedDate, format);
+          newValue = formatDateByLocale(parsedDate, format);
+        }
       }
     }
-  }
 
-  // Always call onChange to update parent-controlled value
-  onChange({ target: { value: newValue } });
-};
-
+    onInputChange({ target: { name: e.target.name, value: newValue } });
+  };
 
   const handleCurrentDate = () => {
     const today = new Date();
@@ -281,24 +274,17 @@ const handleInputChange = (e) => {
     "Sat",
   ];
 
-  const monthsOptions = resolvedLocale.months || [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
+  const monthsOptions = resolvedLocale.months.map((label, value) => ({
+    value,
+    label,
+  })) || ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
   const yearsOptions = Array.from(
     { length: maxYear - minYear + 1 },
-    (_, i) => maxYear - i
+    (_, i) => {
+      const year = maxYear - i;
+      return { value: year, label: year };
+    }
   );
 
   const classNames = [
