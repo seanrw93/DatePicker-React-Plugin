@@ -50,8 +50,7 @@ const DatePicker = ({
     setShowCalendar(true);
   };
 
-  // Handle date formatting and validation
-  const handleInputChange = (e) => {
+  const handleInputValidation = (e) => {
     const input = e.target.value;
     const format = resolvedLocale.dateFormat || "DD/MM/YYYY";
     const separatorMatch = format.match(/[^A-Za-z]/);
@@ -65,9 +64,14 @@ const DatePicker = ({
       let day, month, year;
 
       formatParts.forEach((part, index) => {
-        if (part === "DD") day = parts[index];
-        if (part === "MM") month = parts[index];
-        if (part === "YYYY") year = parts[index];
+        let val = parts[index];
+        // Pad only day and month
+        if ((part === "DD" || part === "MM") && val && val.length === 1) {
+          val = val.padStart(2, "0");
+        }
+        if (part === "DD") day = val;
+        if (part === "MM") month = val;
+        if (part === "YYYY") year = val;
       });
 
       if (
@@ -82,8 +86,18 @@ const DatePicker = ({
         let parsedMonth = parseInt(month, 10) - 1;
         let parsedYear = parseInt(year, 10);
 
+        // Clamp month to [0, 11] (Jan = 0, Dec = 11)
+        if (parsedMonth > 11) parsedMonth = 11;
+        if (parsedMonth < 0) parsedMonth = 0;
+
+        // Clamp year to min/max
         if (minYear && parsedYear < minYear) parsedYear = minYear;
         if (maxYear && parsedYear > maxYear) parsedYear = maxYear;
+
+        // Clamp day to max days in month
+        const maxDays = getDaysInMonth(parsedMonth, parsedYear);
+        if (parsedDay > maxDays) parsedDay = maxDays;
+        if (parsedDay < 1) parsedDay = 1;
 
         const parsedDate = new Date(parsedYear, parsedMonth, parsedDay);
 
@@ -99,7 +113,7 @@ const DatePicker = ({
       }
     }
 
-    onInputChange({ target: { name: e.target.name, value: newValue } });
+    onChange({ target: { name: e.target.name, value: newValue } });
   };
 
   const handleCurrentDate = () => {
@@ -370,7 +384,7 @@ const DatePicker = ({
         pattern={resolvedLocale.pattern || "\\d{2}/\\d{2}/\\d{4}"}
         required={isRequired}
         disabled={isDisabled}
-        handleChange={handleInputChange}
+        handleChange={handleInputValidation}
         handleFocus={handleInputFocus}
         aria-label="Date Picker Input"
         aria-controls="calendar"

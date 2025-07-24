@@ -1,4 +1,5 @@
 const DateInput = ({ value, name, handleChange, handleFocus, pattern, ...rest }) => {
+
   return (
     <>
       <input
