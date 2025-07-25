@@ -19,11 +19,12 @@ const DatePicker = ({
   isInvalid = null,
   isValid = null,
   isDisabled = false,
+  isIso = false,
   maxDate = undefined,
   minDate = undefined,
   minYear = new Date().getFullYear() - 100,
   maxYear = new Date().getFullYear(),
-  locale = "en-gb",
+  locale = "en-GB",
 }) => {
   // States and Refs START
 
@@ -52,9 +53,10 @@ const DatePicker = ({
 
   const handleInputValidation = (e) => {
     const input = e.target.value;
-    const format = resolvedLocale.dateFormat || "DD/MM/YYYY";
-    const separatorMatch = format.match(/[^A-Za-z]/);
-    const separator = separatorMatch ? separatorMatch[0] : "/";
+    const format = isIso
+      ? "YYYY-MM-DD"
+      : resolvedLocale.dateFormat || "DD/MM/YYYY";
+    const separator = isIso ? "-" : (separatorMatch ? separatorMatch[0] : "/");
     const formatParts = format.split(separator);
     const parts = input.split(separator);
 
@@ -224,9 +226,11 @@ const DatePicker = ({
     const dd = String(dateObj.getDate()).padStart(2, "0");
     const mm = String(dateObj.getMonth() + 1).padStart(2, "0");
     const yyyy = dateObj.getFullYear();
-
+    if (isIso) {
+      return `${yyyy}-${mm}-${dd}`;
+    }
     return format.replace("DD", dd).replace("MM", mm).replace("YYYY", yyyy);
-  };
+};
 
   const getDaysInMonth = (month, year) => {
     return new Date(year, month + 1, 0).getDate();
@@ -379,9 +383,21 @@ const DatePicker = ({
         id={inputId}
         name={inputName}
         className={classNames.join(" ")}
-        placeholder={resolvedLocale.dateFormat || "DD/MM/YYYY"}
+        placeholder={ 
+          isIso
+            ? "YYYY-MM-DD"
+            : resolvedLocale.dateFormat
+              ? resolvedLocale.dateFormat
+              : "DD/MM/YYYY"
+        }
         value={value}
-        pattern={resolvedLocale.pattern || "\\d{2}/\\d{2}/\\d{4}"}
+        pattern={
+          isIso
+            ? "\\d{4}-\\d{2}-\\d{2}"
+            : resolvedLocale.pattern
+              ? resolvedLocale.pattern
+              : "\\d{2}/\\d{2}/\\d{4}" 
+        }        
         required={isRequired}
         disabled={isDisabled}
         handleChange={handleInputValidation}
