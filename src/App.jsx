@@ -1,3 +1,5 @@
+//App.jsx used as test file for the DatePicker component
+
 import { useState } from "react";
 import DatePicker from "./DatePicker";
 
@@ -15,9 +17,7 @@ function App() {
       inputName="datePicker"
       value={date}
       onChange={handleDateChange}
-      isIso={true}
       locale="fr"
-      isReadOnly={true}
     />
   );
 }

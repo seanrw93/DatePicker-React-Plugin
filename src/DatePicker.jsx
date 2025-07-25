@@ -14,18 +14,17 @@ const DatePicker = ({
   inputClassName = "",
   inputName = "",
   value = "",
-  onChange = () => {},
+  onChange = (() => {}) || undefined,
   isRequired = false,
   isInvalid = null,
   isValid = null,
   isDisabled = false,
-  isIso = false,
   isReadOnly = false,
   maxDate = undefined,
   minDate = undefined,
   minYear = new Date().getFullYear() - 100,
   maxYear = new Date().getFullYear(),
-  locale = "en-GB",
+  locale = "en-gb",
 }) => {
   // States and Refs START
 
@@ -52,72 +51,100 @@ const DatePicker = ({
     setShowCalendar(true);
   };
 
-  const handleInputValidation = (e) => {
-    const input = e.target.value;
-    const format = isIso
-      ? "YYYY-MM-DD"
-      : resolvedLocale.dateFormat || "DD/MM/YYYY";
-    const separator = isIso ? "-" : (separatorMatch ? separatorMatch[0] : "/");
-    const formatParts = format.split(separator);
-    const parts = input.split(separator);
+// ...existing code...
+const handleInputValidation = (e) => {
+  let input = e.target.value;
+  const format = resolvedLocale.dateFormat || "DD/MM/YYYY";
+  const separatorMatch = format.match(/[^A-Za-z]/);
+  const separator = separatorMatch ? separatorMatch[0] : "/";
+  const formatParts = format.split(separator);
 
-    let newValue = input;
+  // Remove all non-digit characters for processing
+  const digits = input.replace(/\D/g, "");
 
-    if (parts.length === 3) {
-      let day, month, year;
+  // Build the formatted value as the user types
+  let formatted = "";
+  let digitIndex = 0;
+  for (let i = 0; i < formatParts.length; i++) {
+    const part = formatParts[i];
+    const partLength = part.length;
+    const partDigits = digits.substr(digitIndex, partLength);
+    formatted += partDigits;
+    digitIndex += partDigits.length;
+    if (partDigits.length === partLength && i < formatParts.length - 1) {
+      formatted += separator;
+    }
+  }
 
-      formatParts.forEach((part, index) => {
-        let val = parts[index];
-        // Pad only day and month
-        if ((part === "DD" || part === "MM") && val && val.length === 1) {
-          val = val.padStart(2, "0");
-        }
-        if (part === "DD") day = val;
-        if (part === "MM") month = val;
-        if (part === "YYYY") year = val;
-      });
+  // If user is deleting, allow partial separator removal
+  if (input.length < formatted.length) {
+    formatted = formatted.substr(0, input.length);
+  }
 
-      if (
-        day?.length === 2 &&
-        month?.length === 2 &&
-        year?.length === 4 &&
-        !isNaN(day) &&
-        !isNaN(month) &&
-        !isNaN(year)
-      ) {
-        let parsedDay = parseInt(day, 10);
-        let parsedMonth = parseInt(month, 10) - 1;
-        let parsedYear = parseInt(year, 10);
+  let newValue = formatted;
 
-        // Clamp month to [0, 11] (Jan = 0, Dec = 11)
-        if (parsedMonth > 11) parsedMonth = 11;
-        if (parsedMonth < 0) parsedMonth = 0;
+  // Only auto-format and update dateValue if all parts are present and correct length
+  const parts = formatted.split(separator);
+  if (
+    parts.length === 3 &&
+    parts.every((part, idx) => {
+      if (formatParts[idx] === "YYYY") return part.length === 4;
+      return part.length === 2;
+    })
+  ) {
+    let day, month, year;
+    formatParts.forEach((part, index) => {
+      let val = parts[index];
+      if ((part === "DD" || part === "MM") && val && val.length === 1) {
+        val = val.padStart(2, "0");
+      }
+      if (part === "DD") day = val;
+      if (part === "MM") month = val;
+      if (part === "YYYY") year = val;
+    });
 
-        // Clamp year to min/max
-        if (minYear && parsedYear < minYear) parsedYear = minYear;
-        if (maxYear && parsedYear > maxYear) parsedYear = maxYear;
+    if (
+      day &&
+      month &&
+      year &&
+      !isNaN(day) &&
+      !isNaN(month) &&
+      !isNaN(year)
+    ) {
+      let parsedDay = parseInt(day, 10);
+      let parsedMonth = parseInt(month, 10) - 1;
+      let parsedYear = parseInt(year, 10);
 
-        // Clamp day to max days in month
-        const maxDays = getDaysInMonth(parsedMonth, parsedYear);
-        if (parsedDay > maxDays) parsedDay = maxDays;
-        if (parsedDay < 1) parsedDay = 1;
+      // Clamp month to [0, 11]
+      if (parsedMonth > 11) parsedMonth = 11;
+      if (parsedMonth < 0) parsedMonth = 0;
 
-        const parsedDate = new Date(parsedYear, parsedMonth, parsedDay);
+      // Clamp year to min/max
+      if (minYear && parsedYear < minYear) parsedYear = minYear;
+      if (maxYear && parsedYear > maxYear) parsedYear = maxYear;
 
-        if (!isNaN(parsedDate.getTime())) {
-          setDateValue({
-            date: parsedDay,
-            month: parsedMonth,
-            year: parsedYear,
-          });
+      // Clamp day to max days in month
+      const maxDays = getDaysInMonth(parsedMonth, parsedYear);
+      if (parsedDay > maxDays) parsedDay = maxDays;
+      if (parsedDay < 1) parsedDay = 1;
 
-          newValue = formatDateByLocale(parsedDate, format);
-        }
+      const parsedDate = new Date(parsedYear, parsedMonth, parsedDay);
+
+      if (!isNaN(parsedDate.getTime())) {
+        setDateValue({
+          date: parsedDay,
+          month: parsedMonth,
+          year: parsedYear,
+        });
+
+        newValue = formatDateByLocale(parsedDate, format);
       }
     }
+  }
 
-    onChange({ target: { name: e.target.name, value: newValue } });
-  };
+  onChange({ target: { name: e.target.name, value: newValue } });
+};
+// ...existing code...
 
   const handleCurrentDate = () => {
     const today = new Date();
@@ -227,11 +254,9 @@ const DatePicker = ({
     const dd = String(dateObj.getDate()).padStart(2, "0");
     const mm = String(dateObj.getMonth() + 1).padStart(2, "0");
     const yyyy = dateObj.getFullYear();
-    if (isIso) {
-      return `${yyyy}-${mm}-${dd}`;
-    }
+
     return format.replace("DD", dd).replace("MM", mm).replace("YYYY", yyyy);
-};
+  };
 
   const getDaysInMonth = (month, year) => {
     return new Date(year, month + 1, 0).getDate();
@@ -384,21 +409,9 @@ const DatePicker = ({
         id={inputId}
         name={inputName}
         className={classNames.join(" ")}
-        placeholder={ 
-          isIso
-            ? "YYYY-MM-DD"
-            : resolvedLocale.dateFormat
-              ? resolvedLocale.dateFormat
-              : "DD/MM/YYYY"
-        }
+        placeholder={resolvedLocale.dateFormat || "DD/MM/YYYY"}
         value={value}
-        pattern={
-          isIso
-            ? "\\d{4}-\\d{2}-\\d{2}"
-            : resolvedLocale.pattern
-              ? resolvedLocale.pattern
-              : "\\d{2}/\\d{2}/\\d{4}" 
-        }        
+        pattern={resolvedLocale.pattern || "\\d{2}/\\d{2}/\\d{4}"}
         required={isRequired}
         disabled={isDisabled}
         handleChange={handleInputValidation}

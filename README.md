@@ -66,7 +66,6 @@ Defaults are shown below.
 | `isInvalid`      | boolean  | `null`                           | Marks the input as invalid          |
 | `isValid`        | boolean  | `null`                           | Marks the input as valid            |
 | `isDisabled`     | boolean  | `false`                          | Disables the input and calendar     |
-| `isIso`          | boolean  | `false`                          | Use ISO 8601 format (YYYY-MM-DD) for input/output   |
 | `isReadOnly`     | boolean  | `false`                          | Marks the input as readonly         |
 | `maxDate`        | Date     | `undefined`                      | Maximum selectable date             |
 | `minDate`        | Date     | `undefined`                      | Minimum selectable date             |
