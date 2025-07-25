@@ -1,6 +1,6 @@
 {
   "name": "react-i18n-datepicker",
-  "version": "1.0.23",
+  "version": "1.0.24",
   "description": "A customisable and modular React datepicker component with i18n support.",
   "main": "./dist/index.js",
   "module": "./dist/index.es.js",
@@ -9,6 +9,7 @@
     ".": {
       "import": "./dist/index.es.js",
       "require": "./dist/index.js",
+      "types": "./dist/index.d.ts",
       "default": "./dist/index.es.js"
     },
     "./dist/react-i18n-datepicker.css": {

@@ -1,4 +1,4 @@
-const DateInput = ({ value, name, handleChange, handleFocus, pattern, ...rest }) => {
+const DateInput = ({ value, name, handleChange, handleFocus, pattern, readOnly, ...rest }) => {
 
   return (
     <>
@@ -9,6 +9,7 @@ const DateInput = ({ value, name, handleChange, handleFocus, pattern, ...rest })
         pattern={pattern}
         onChange={handleChange}
         onFocus={handleFocus}
+        readOnly={readOnly}
         {...rest}
       />
     </>

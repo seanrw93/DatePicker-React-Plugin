@@ -20,6 +20,7 @@ const DatePicker = ({
   isValid = null,
   isDisabled = false,
   isIso = false,
+  isReadOnly = false,
   maxDate = undefined,
   minDate = undefined,
   minYear = new Date().getFullYear() - 100,
@@ -407,6 +408,8 @@ const DatePicker = ({
         aria-haspopup="dialog"
         aria-expanded={showCalendar}
         aria-invalid={isInvalid ? "true" : undefined}
+        aria-readonly={isReadOnly}
+        readOnly={isReadOnly}
       />
       <CSSTransition
         in={showCalendar}

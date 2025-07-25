@@ -17,6 +17,7 @@ function App() {
       onChange={handleDateChange}
       isIso={true}
       locale="fr"
+      isReadOnly={true}
     />
   );
 }

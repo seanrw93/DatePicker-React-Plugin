@@ -34,10 +34,6 @@ function Example() {
         value={date}
         onChange={e => setDate(e.target.value)}
         isRequired={true}
-        isInvalid={null}
-        isValid={null}
-        isDisabled={false}
-        isIso={false}
         maxDate={new Date()}
         minDate={new Date(2000, 0, 1)}
         minYear={2000}
@@ -71,6 +67,7 @@ Defaults are shown below.
 | `isValid`        | boolean  | `null`                           | Marks the input as valid            |
 | `isDisabled`     | boolean  | `false`                          | Disables the input and calendar     |
 | `isIso`          | boolean  | `false`                          | Use ISO 8601 format (YYYY-MM-DD) for input/output   |
+| `isReadOnly`     | boolean  | `false`                          | Marks the input as readonly         |
 | `maxDate`        | Date     | `undefined`                      | Maximum selectable date             |
 | `minDate`        | Date     | `undefined`                      | Minimum selectable date             |
 | `minYear`        | number   | `new Date().getFullYear() - 100` | Minimum selectable year             |
