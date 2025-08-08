@@ -20,6 +20,7 @@ const DatePicker = ({
   isValid = null,
   isDisabled = false,
   isReadOnly = false,
+  aria={ label: null, describedBy: null },
   maxDate = undefined,
   minDate = undefined,
   minYear = new Date().getFullYear() - 100,
@@ -51,100 +52,119 @@ const DatePicker = ({
     setShowCalendar(true);
   };
 
-// ...existing code...
-const handleInputValidation = (e) => {
-  let input = e.target.value;
-  const format = resolvedLocale.dateFormat || "DD/MM/YYYY";
-  const separatorMatch = format.match(/[^A-Za-z]/);
-  const separator = separatorMatch ? separatorMatch[0] : "/";
-  const formatParts = format.split(separator);
+  const handleInputValidation = (e) => {
+    let input = e.target.value;
+    const format = resolvedLocale.dateFormat || "DD/MM/YYYY";
+    const separatorMatch = format.match(/[^A-Za-z]/);
+    const separator = separatorMatch ? separatorMatch[0] : "/";
+    const formatParts = format.split(separator);
 
-  // Remove all non-digit characters for processing
-  const digits = input.replace(/\D/g, "");
+    // Remove all non-digit characters for processing
+    const digits = input.replace(/\D/g, "");
 
-  // Build the formatted value as the user types
-  let formatted = "";
-  let digitIndex = 0;
-  for (let i = 0; i < formatParts.length; i++) {
-    const part = formatParts[i];
-    const partLength = part.length;
-    const partDigits = digits.substr(digitIndex, partLength);
-    formatted += partDigits;
-    digitIndex += partDigits.length;
-    if (partDigits.length === partLength && i < formatParts.length - 1) {
-      formatted += separator;
-    }
-  }
-
-  // If user is deleting, allow partial separator removal
-  if (input.length < formatted.length) {
-    formatted = formatted.substr(0, input.length);
-  }
-
-  let newValue = formatted;
-
-  // Only auto-format and update dateValue if all parts are present and correct length
-  const parts = formatted.split(separator);
-  if (
-    parts.length === 3 &&
-    parts.every((part, idx) => {
-      if (formatParts[idx] === "YYYY") return part.length === 4;
-      return part.length === 2;
-    })
-  ) {
-    let day, month, year;
-    formatParts.forEach((part, index) => {
-      let val = parts[index];
-      if ((part === "DD" || part === "MM") && val && val.length === 1) {
-        val = val.padStart(2, "0");
+    // Build the formatted value as the user types
+    let formatted = "";
+    let digitIndex = 0;
+    for (let i = 0; i < formatParts.length; i++) {
+      const part = formatParts[i];
+      const partLength = part.length;
+      const partDigits = digits.substr(digitIndex, partLength);
+      formatted += partDigits;
+      digitIndex += partDigits.length;
+      if (partDigits.length === partLength && i < formatParts.length - 1) {
+        formatted += separator;
       }
-      if (part === "DD") day = val;
-      if (part === "MM") month = val;
-      if (part === "YYYY") year = val;
-    });
+    }
 
+    // If user is deleting, allow partial separator removal
+    if (input.length < formatted.length) {
+      formatted = formatted.substr(0, input.length);
+    }
+
+    let newValue = formatted;
+
+    // Only auto-format and update dateValue if all parts are present and correct length
+    const parts = formatted.split(separator);
     if (
-      day &&
-      month &&
-      year &&
-      !isNaN(day) &&
-      !isNaN(month) &&
-      !isNaN(year)
+      parts.length === 3 &&
+      parts.every((part, idx) => {
+        if (formatParts[idx] === "YYYY") return part.length === 4;
+        return part.length === 2;
+      })
     ) {
-      let parsedDay = parseInt(day, 10);
-      let parsedMonth = parseInt(month, 10) - 1;
-      let parsedYear = parseInt(year, 10);
+      let day, month, year;
+      formatParts.forEach((part, index) => {
+        let val = parts[index];
+        if ((part === "DD" || part === "MM") && val && val.length === 1) {
+          val = val.padStart(2, "0");
+        }
+        if (part === "DD") day = val;
+        if (part === "MM") month = val;
+        if (part === "YYYY") year = val;
+      });
 
-      // Clamp month to [0, 11]
-      if (parsedMonth > 11) parsedMonth = 11;
-      if (parsedMonth < 0) parsedMonth = 0;
+      if (
+        day &&
+        month &&
+        year &&
+        !isNaN(day) &&
+        !isNaN(month) &&
+        !isNaN(year)
+      ) {
+        let parsedDay = parseInt(day, 10);
+        let parsedMonth = parseInt(month, 10) - 1;
+        let parsedYear = parseInt(year, 10);
 
-      // Clamp year to min/max
-      if (minYear && parsedYear < minYear) parsedYear = minYear;
-      if (maxYear && parsedYear > maxYear) parsedYear = maxYear;
+        // Clamp based on minDate/maxDate if provided, otherwise use default logic
+        if (minDate || maxDate) {
+          // Use minDate/maxDate for clamping
+          const parsedDate = new Date(parsedYear, parsedMonth, parsedDay);
+          
+          if (minDate && parsedDate < new Date(minDate)) {
+            const minDateObj = new Date(minDate);
+            parsedYear = minDateObj.getFullYear();
+            parsedMonth = minDateObj.getMonth();
+            parsedDay = minDateObj.getDate();
+          }
+          
+          if (maxDate && parsedDate > new Date(maxDate)) {
+            const maxDateObj = new Date(maxDate);
+            parsedYear = maxDateObj.getFullYear();
+            parsedMonth = maxDateObj.getMonth();
+            parsedDay = maxDateObj.getDate();
+          }
+        } else {
+          // Default clamping logic when minDate/maxDate are not provided
+          // Clamp month to [0, 11]
+          if (parsedMonth > 11) parsedMonth = 11;
+          if (parsedMonth < 0) parsedMonth = 0;
 
-      // Clamp day to max days in month
-      const maxDays = getDaysInMonth(parsedMonth, parsedYear);
-      if (parsedDay > maxDays) parsedDay = maxDays;
-      if (parsedDay < 1) parsedDay = 1;
+          // Clamp year to min/max
+          if (minYear && parsedYear < minYear) parsedYear = minYear;
+          if (maxYear && parsedYear > maxYear) parsedYear = maxYear;
 
-      const parsedDate = new Date(parsedYear, parsedMonth, parsedDay);
+          // Clamp day to max days in month
+          const maxDays = getDaysInMonth(parsedMonth, parsedYear);
+          if (parsedDay > maxDays) parsedDay = maxDays;
+          if (parsedDay < 1) parsedDay = 1;
+        }
 
-      if (!isNaN(parsedDate.getTime())) {
-        setDateValue({
-          date: parsedDay,
-          month: parsedMonth,
-          year: parsedYear,
-        });
+        const parsedDate = new Date(parsedYear, parsedMonth, parsedDay);
 
-        newValue = formatDateByLocale(parsedDate, format);
+        if (!isNaN(parsedDate.getTime())) {
+          setDateValue({
+            date: parsedDay,
+            month: parsedMonth,
+            year: parsedYear,
+          });
+
+          newValue = formatDateByLocale(parsedDate, format);
+        }
       }
     }
-  }
 
-  onChange({ target: { name: e.target.name, value: newValue } });
-};
-// ...existing code...
+    onChange({ target: { name: e.target.name, value: newValue } });
+  };
 
   const handleCurrentDate = () => {
     const today = new Date();
@@ -162,11 +182,24 @@ const handleInputValidation = (e) => {
   const handlePrev = (e) => {
     e.preventDefault();
     setDateValue((prev) => {
-      // Only block if at min year and January
-      if (isDisabled || (prev.month === 0 && prev.year === minYear))
-        return prev;
+      if (isDisabled) return prev;
+      
       const newMonth = prev.month === 0 ? 11 : prev.month - 1;
       const newYear = prev.month === 0 ? prev.year - 1 : prev.year;
+      const newDate = new Date(newYear, newMonth, prev.date);
+      
+      // Check minDate/maxDate if provided, otherwise use minYear
+      if (minDate || maxDate) {
+        if (minDate && newDate < new Date(minDate)) {
+          return prev; // Block navigation
+        }
+      } else {
+        // Default logic: block if at min year and January
+        if (prev.month === 0 && prev.year === minYear) {
+          return prev;
+        }
+      }
+      
       return {
         ...prev,
         month: newMonth,
@@ -178,11 +211,24 @@ const handleInputValidation = (e) => {
   const handleNext = (e) => {
     e.preventDefault();
     setDateValue((prev) => {
-      // Only block if at max year and December
-      if (isDisabled || (prev.month === 11 && prev.year === maxYear))
-        return prev;
+      if (isDisabled) return prev;
+      
       const newMonth = prev.month === 11 ? 0 : prev.month + 1;
       const newYear = prev.month === 11 ? prev.year + 1 : prev.year;
+      const newDate = new Date(newYear, newMonth, prev.date);
+      
+      // Check minDate/maxDate if provided, otherwise use maxYear
+      if (minDate || maxDate) {
+        if (maxDate && newDate > new Date(maxDate)) {
+          return prev; // Block navigation
+        }
+      } else {
+        // Default logic: block if at max year and December
+        if (prev.month === 11 && prev.year === maxYear) {
+          return prev;
+        }
+      }
+      
       return {
         ...prev,
         month: newMonth,
@@ -323,13 +369,27 @@ const handleInputValidation = (e) => {
     label,
   })) || ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-  const yearsOptions = Array.from(
-    { length: maxYear - minYear + 1 },
-    (_, i) => {
-      const year = maxYear - i;
-      return { value: year, label: year };
+  const yearsOptions = useMemo(() => {
+    if (minDate || maxDate) {
+      const minYear = minDate ? new Date(minDate).getFullYear() : new Date().getFullYear() - 100;
+      const maxYear = maxDate ? new Date(maxDate).getFullYear() : new Date().getFullYear();
+      return Array.from(
+        { length: maxYear - minYear + 1 },
+        (_, i) => {
+          const year = minYear + i;
+          return { value: year, label: year };
+        }
+      );
+    } else {
+      return Array.from(
+        { length: maxYear - minYear + 1 },
+        (_, i) => {
+          const year = maxYear - i;
+          return { value: year, label: year };
+        }
+      );
     }
-  );
+  }, [minDate, maxDate, minYear, maxYear]);
 
   const classNames = [
     inputClassName,
@@ -375,13 +435,34 @@ const handleInputValidation = (e) => {
     }
   }, [dateValue, showCalendar]);
 
-  // Update button disabled state based on dateValue and min/max year/month
+  // Update button disabled state based on dateValue and min/max constraints
   useEffect(() => {
-    setButtonDisabled({
-      prev: dateValue.month === 0 && dateValue.year === minYear,
-      next: dateValue.month === 11 && dateValue.year === maxYear,
-    });
-  }, [dateValue, minYear, maxYear, isDisabled]);
+    if (minDate || maxDate) {
+      // Use minDate/maxDate for button state
+      const currentDate = new Date(dateValue.year, dateValue.month, dateValue.date || 1);
+      
+      // Check if going to previous month would exceed minDate
+      const prevMonth = dateValue.month === 0 ? 11 : dateValue.month - 1;
+      const prevYear = dateValue.month === 0 ? dateValue.year - 1 : dateValue.year;
+      const prevDate = new Date(prevYear, prevMonth, dateValue.date || 1);
+      
+      // Check if going to next month would exceed maxDate
+      const nextMonth = dateValue.month === 11 ? 0 : dateValue.month + 1;
+      const nextYear = dateValue.month === 11 ? dateValue.year + 1 : dateValue.year;
+      const nextDate = new Date(nextYear, nextMonth, dateValue.date || 1);
+      
+      setButtonDisabled({
+        prev: minDate ? prevDate < new Date(minDate) : false,
+        next: maxDate ? nextDate > new Date(maxDate) : false,
+      });
+    } else {
+      // Default logic using minYear/maxYear
+      setButtonDisabled({
+        prev: dateValue.month === 0 && dateValue.year === minYear,
+        next: dateValue.month === 11 && dateValue.year === maxYear,
+      });
+    }
+  }, [dateValue, minDate, maxDate, minYear, maxYear, isDisabled]);
 
   // Close calendar when clicking outside
   useEffect(() => {
@@ -416,7 +497,8 @@ const handleInputValidation = (e) => {
         disabled={isDisabled}
         handleChange={handleInputValidation}
         handleFocus={handleInputFocus}
-        aria-label="Date Picker Input"
+        aria-label={aria.label}
+        aria-describedby={aria.describedBy}
         aria-controls="calendar"
         aria-haspopup="dialog"
         aria-expanded={showCalendar}

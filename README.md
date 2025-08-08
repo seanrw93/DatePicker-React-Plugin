@@ -58,7 +58,7 @@ Defaults are shown below.
 | Prop             | Type     | Default                          | Description                         |
 | ---------------- | -------- | -------------------------------- | ----------------------------------- |
 | `inputId`        | string   | `""`                             | ID for the input field              |
-| `inputClassName` | string   | `""`                             | CSS class(es) for the input field   |
+| `className`      | string   | `""`                             | CSS class(es) for the input field   |
 | `inputName`      | string   | `""`                             | Name attribute for the input field  |
 | `value`          | string   | `undefined`                      | Controlled value (ISO date string)  |
 | `onChange`       | function | `() => {}`                       | Callback when input value changes   |
@@ -67,8 +67,9 @@ Defaults are shown below.
 | `isValid`        | boolean  | `null`                           | Marks the input as valid            |
 | `isDisabled`     | boolean  | `false`                          | Disables the input and calendar     |
 | `isReadOnly`     | boolean  | `false`                          | Marks the input as readonly         |
-| `maxDate`        | Date     | `undefined`                      | Maximum selectable date             |
-| `minDate`        | Date     | `undefined`                      | Minimum selectable date             |
+| `aria`           | Object   | `{label: null, describedBy: null}` | Provides ARIA attributes for accessibility. Use `label` to specify an accessible label for the component, and `describedBy` to reference additional descriptive elements by their IDs. |
+| `maxDate`        | Date     | `undefined`                      | Maximum selectable date (Year from this prop takes precedent over maxYear if set)           |
+Minimum selectable date (Year from this prop takes precedence over minYear if set)           |
 | `minYear`        | number   | `new Date().getFullYear() - 100` | Minimum selectable year             |
 | `maxYear`        | number   | `new Date().getFullYear()`       | Maximum selectable year             |
 | `locale`         | string   | `"en-gb"`                        | Locale for date format and language |

@@ -18,6 +18,8 @@ function App() {
       value={date}
       onChange={handleDateChange}
       locale="fr"
+      minDate={new Date("2023-01-01")}
+      maxDate={new Date("2028-12-31")}
     />
   );
 }

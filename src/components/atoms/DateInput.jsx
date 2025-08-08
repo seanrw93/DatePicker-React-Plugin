@@ -4,6 +4,7 @@ const DateInput = ({ value, name, handleChange, handleFocus, pattern, readOnly, 
     <>
       <input
         type="text"
+        role="textbox"
         name={name}
         value={value}
         pattern={pattern}
