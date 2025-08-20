@@ -59,26 +59,37 @@ const DatePicker = ({
     const separator = separatorMatch ? separatorMatch[0] : "/";
     const formatParts = format.split(separator);
 
-    // Remove all non-digit characters for processing
-    const digits = input.replace(/\D/g, "");
-
+    // Get cursor position before processing
+    const cursorPosition = e.target.selectionStart;
+    
+    // Only allow digits and the separator
+    const cleanInput = input.replace(new RegExp(`[^\\d\\${separator}]`, 'g'), '');
+    
     // Build the formatted value as the user types
     let formatted = "";
-    let digitIndex = 0;
-    for (let i = 0; i < formatParts.length; i++) {
-      const part = formatParts[i];
-      const partLength = part.length;
-      const partDigits = digits.substr(digitIndex, partLength);
-      formatted += partDigits;
-      digitIndex += partDigits.length;
-      if (partDigits.length === partLength && i < formatParts.length - 1) {
-        formatted += separator;
+    let digitCount = 0;
+    for (let i = 0; i < cleanInput.length; i++) {
+      const char = cleanInput[i];
+      
+      if (char === separator) {
+        // Skip if separator is already in the right place
+        if (formatted.length === 2 || formatted.length === 5) {
+          formatted += char;
+        }
+      } else if (/\d/.test(char)) {
+        // Add separator before digit if needed
+        if (digitCount === 2 && formatted.length === 2) {
+          formatted += separator;
+        } else if (digitCount === 4 && formatted.length === 5) {
+          formatted += separator;
+        }
+        
+        formatted += char;
+        digitCount++;
+        
+        // Stop if we've reached max length
+        if (digitCount >= 8) break;
       }
-    }
-
-    // If user is deleting, allow partial separator removal
-    if (input.length < formatted.length) {
-      formatted = formatted.substr(0, input.length);
     }
 
     let newValue = formatted;
