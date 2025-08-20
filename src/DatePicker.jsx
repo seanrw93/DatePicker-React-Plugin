@@ -519,7 +519,7 @@ const DatePicker = ({
       />
       <CSSTransition
         in={showCalendar}
-        timeout={500}
+        timeout={300}
         classNames="calendar-anim"
         unmountOnExit
         nodeRef={calendarRef}

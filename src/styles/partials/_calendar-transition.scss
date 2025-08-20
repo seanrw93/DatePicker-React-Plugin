@@ -1,5 +1,5 @@
 .calendar-anim-enter {
-  height: 0;
+  max-height: 0;
   opacity: 0;
   overflow: hidden;
   padding-top: 0;
@@ -7,24 +7,24 @@
 }
 
 .calendar-anim-enter-active {
-  height: 300px;  /* Adjust to match .calendar__content */
+  max-height: 500px;  /* Adjust to match .calendar__content */
   opacity: 1;
   padding-top: 10px;
   padding-bottom: 10px;
-  transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s, padding 0.3s;
+  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s, padding 0.3s;
 }
 
 .calendar-anim-exit {
-  height: 300px;
+  max-height: 500px;
   opacity: 1;
   padding-top: 10px;
   padding-bottom: 10px;
 }
 
 .calendar-anim-exit-active {
-  height: 0;
+  max-height: 0;
   opacity: 0;
   padding-top: 0;
   padding-bottom: 0;
-  transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s, padding 0.3s;
+  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s, padding 0.3s;
 }
