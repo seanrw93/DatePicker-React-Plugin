@@ -2,6 +2,8 @@
 
 A fully customisable and modular React datepicker component with internationalisation (i18n) support.
 
+[npm version](https://www.npmjs.com/package/react-i18n-datepicker)
+
 ## Features
 
 - Select single dates
